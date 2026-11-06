@@ -1,26 +1,24 @@
 ---
-title: KRDS Hugo 테마
+title: 홈
 hero:
-  eyebrow: Korea Design System for Hugo
-  title: 공공 웹사이트를 위한 접근성 중심 Hugo 테마
-  lead: 빠른 Hugo 빌드와 KRDS의 일관된 탐색 경험을 함께 제공합니다.
+  eyebrow: Hugo 테마
+  title: 접근성을 갖춘 KRDS 스타일 사이트를 Hugo로
+  lead: 범정부 UI/UX 디자인시스템(KRDS)의 토큰과 컴포넌트를 그대로 가져와, 글자 크기와 화면 모드 설정이 되는 문서·블로그 사이트를 만듭니다.
   actions:
     - text: 시작하기
       url: /docs/getting-started/
       style: primary
-    - text: GitHub에서 보기
-      url: https://github.com/leejongyoung/hugo-theme-krds
+    - text: 마크다운 보기
+      url: /docs/typography/
       style: secondary
+features_title: 주요 기능
 features:
-  - title: Hugo Module
-    text: Git tag로 버전을 고정하고 여러 사이트에서 같은 테마를 재사용합니다.
-    url: /docs/getting-started/
+  - title: KRDS 원본 그대로
+    text: 토큰과 CSS 원본은 고치지 않고 가져오며, 색과 글꼴은 CSS 변수 재선언으로 바꿉니다.
+    url: /docs/configuration/
+  - title: 글자 크기·화면 모드
+    text: 글자 크기 5단계와 기본·선명하게·시스템 설정 모드를 지원하고, 선택은 기억됩니다.
   - title: 문서와 블로그
-    text: 문서 LNB·목차, 블로그 목록·페이지 이동, 태그 taxonomy를 기본 제공합니다.
-    url: /docs/content/
-  - title: 접근 가능한 검색
-    text: 빌드 시 JSON 색인을 만들고 외부 서비스 없이 브라우저에서 검색합니다.
-    url: /docs/search-tags/
+    text: 사이드 내비게이션, 이 페이지의 구성, 페이지네이션, 브레드크럼을 갖춘 레이아웃을 제공합니다.
+    url: /blog/
 ---
-
-이 예제는 테마가 제공하는 레이아웃과 Hugo의 콘텐츠 모델만으로 구성되어 있습니다.

@@ -1,7 +1,7 @@
 name = "Hugo Theme KRDS"
 license = "MIT"
 licenselink = "https://github.com/leejongyoung/hugo-theme-krds/blob/main/LICENSE"
-description = "Accessible Hugo theme based on the Korea Design System (KRDS)"
+description = "Hugo theme based on KRDS (Korea Design System, 범정부 UI/UX 디자인시스템)"
 homepage = "https://github.com/leejongyoung/hugo-theme-krds"
 demosite = "https://leejongyoung.github.io/hugo-theme-krds/"
 tags = ["accessible", "blog", "documentation", "government", "krds", "responsive", "search"]

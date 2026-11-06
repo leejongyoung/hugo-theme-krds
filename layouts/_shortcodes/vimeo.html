@@ -1,0 +1,5 @@
+{{- $id := .Get "id" | default "" -}}
+{{- if not (findRE `^[0-9]+$` $id) -}}<p class="th-embed-error" role="alert">Vimeo 영상 ID(숫자)를 확인해 주세요.</p>{{- else -}}
+{{- $src := printf "https://player.vimeo.com/video/%s?autoplay=1&dnt=1" $id -}}{{- with .Get "hash" }}{{ $src = printf "%s&h=%s" $src (. | urlquery) }}{{ end -}}{{- with .Get "start" }}{{ $src = printf "%s#t=%ss" $src . }}{{ end -}}
+{{ partial "embed-frame.html" (dict "Src" $src "Title" (.Get "title" | default "Vimeo 동영상") "Provider" "Vimeo" "Link" (printf "https://vimeo.com/%s" $id) "Caption" (.Get "caption") "Ratio" (.Get "ratio") "Allow" "autoplay; fullscreen; picture-in-picture; clipboard-write" "Button" "동영상 재생") }}
+{{- end -}}

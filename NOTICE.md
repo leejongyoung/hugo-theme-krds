@@ -1,0 +1,57 @@
+# NOTICE
+
+## 1. KRDS (Korea Design System) — 범정부 UI/UX 디자인시스템
+
+- Source: <https://www.krds.go.kr> · HTML Component Kit <https://github.com/KRDS-uiux/krds-uiux>
+- Version vendored: **1.1.0** (git tag `1.1.0`, commit `d6bb184c823e4757f05807ea4646a23e3133b6e6`)
+- Provider: 행정안전부 (Ministry of the Interior and Safety), released in 2024
+- License: **공공누리 제1유형 (KOGL Type 1)** — commercial use, modification and derivative works are allowed and **source attribution is required**. Terms: <https://www.krds.go.kr/html/eng/utility/utility_05.html> (checked 2026-11-07).
+- The kit's `package.json` also says `ISC`; its README defers to the KRDS site terms. Both permit this use; the strictest requirement (attribution) is followed.
+- The Ministry bears no responsibility for losses caused by improperly modified public materials.
+
+Attribution (shown in every page footer by `layouts/_partials/footer.html`; do not remove it):
+
+> 이 사이트의 디자인은 행정안전부가 2024년 제작하여 공공누리 제1유형으로 개방한 범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Hugo 테마 hugo-theme-krds를 사용합니다.
+
+### What is vendored, and where
+
+| Path in this repo | From the kit (v1.1.0) | Changes |
+| :--- | :--- | :--- |
+| `static/assets/js/vendor/krds-ui-script.js` | `resources/js/component/ui-script.js` | none |
+| `static/assets/img/component/icon/` | `resources/img/component/icon/` | `ico_logo_krds*.svg` removed (KRDS identity) |
+| KRDS rules in `static/assets/css/main.css` | compiled from the kit's SCSS and token CSS | bundled with this theme's layout rules; token values unchanged |
+| `static/assets/fonts/PretendardGOV-{Regular,Medium,Bold}.subset.woff2` | `resources/fonts/` | none |
+
+Not included on purpose: the KRDS logo, favicons, the "공식 전자정부 누리집" banner, and any government emblem.
+
+## 2. Pretendard GOV (font)
+
+- Source: <https://github.com/orioncactus/pretendard> (the GOV subset that ships with the KRDS kit)
+- License: **SIL Open Font License 1.1** — full text in `static/assets/fonts/PRETENDARD-LICENSE.txt`.
+- The font files are redistributed unmodified.
+
+## 3. KaTeX (math rendering)
+
+- Source: <https://github.com/KaTeX/KaTeX> · Version vendored: **v0.19.1**
+- License: **MIT** — `static/assets/vendor/katex/LICENSE`
+- Files: `katex.min.js`, `contrib/auto-render.min.js`, `katex-swap.min.css` and 20 `fonts/*.woff2` files, unmodified.
+- Loaded only on pages that contain math.
+
+## 4. Mermaid (diagrams)
+
+- Source: <https://github.com/mermaid-js/mermaid> (npm `mermaid`) · Version vendored: **12.3.0**
+- License: **MIT** — `static/assets/vendor/mermaid/LICENSE`
+- Files: the ESM build `mermaid.esm.min.mjs` and its lazily loaded chunks, unmodified.
+- ELK layout and math-in-diagram chunks are omitted; the theme uses `layout: 'dagre'`.
+- Loaded only on pages that contain a `mermaid` code block.
+
+## 5. Chart.js (charts)
+
+- Source: <https://github.com/chartjs/Chart.js> (npm `chart.js`) · Version vendored: **4.6.1**
+- License: **MIT** — `static/assets/vendor/chartjs/LICENSE.md`
+- File: `chart.umd.js`, unmodified. It bundles `@kurkle/color` (MIT).
+- Loaded only on pages that contain a `chart` code block.
+
+## 6. This theme's own code
+
+MIT License, see `LICENSE`.

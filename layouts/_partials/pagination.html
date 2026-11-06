@@ -1,7 +1,1 @@
-{{ with .Paginator }}{{ if gt .TotalPages 1 }}
-<nav class="pagination" aria-label="페이지 이동">
-  {{ with .Prev }}<a href="{{ .URL }}" rel="prev">이전</a>{{ end }}
-  <span>{{ .PageNumber }} / {{ .TotalPages }}</span>
-  {{ with .Next }}<a href="{{ .URL }}" rel="next">다음</a>{{ end }}
-</nav>
-{{ end }}{{ end }}
+{{ with .Paginator }}{{ if gt .TotalPages 1 }}<nav aria-label="페이지 이동"><div class="krds-pagination">{{ with .Prev }}<a class="page-navi prev" href="{{ .URL }}">이전</a>{{ else }}<a class="page-navi prev disabled" role="link" aria-disabled="true">이전</a>{{ end }}<div class="page-links">{{ range .Pagers }}<a class="page-link{{ if eq .PageNumber $.Paginator.PageNumber }} active{{ end }}" href="{{ .URL }}"{{ if eq .PageNumber $.Paginator.PageNumber }} aria-current="page"{{ end }}>{{ if eq .PageNumber $.Paginator.PageNumber }}<span class="sr-only">현재페이지 </span>{{ end }}{{ .PageNumber }}</a>{{ end }}</div>{{ with .Next }}<a class="page-navi next" href="{{ .URL }}">다음</a>{{ else }}<a class="page-navi next disabled" role="link" aria-disabled="true">다음</a>{{ end }}</div></nav>{{ end }}{{ end }}

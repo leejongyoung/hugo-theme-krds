@@ -1,7 +1,31 @@
 {{ define "main" }}
-<div class="container page-shell">
+<div class="th-wrap">
   {{ partial "breadcrumb.html" . }}
-  <header class="list-header"><h1>{{ .Title }}</h1><p>주제별 콘텐츠를 찾아보세요.</p></header>
-  <ul class="tag-cloud">{{ range .Data.Terms.Alphabetical }}<li><a href="{{ .Page.RelPermalink }}">#{{ .Page.LinkTitle }} <span>{{ .Count }}</span></a></li>{{ end }}</ul>
+  <h1 class="th-page-title">{{ .Title | default "태그" }}</h1>
+  {{ with .Description }}<p class="th-page-lead">{{ . }}</p>{{ end }}
+  {{ with .Content }}<div class="th-prose">{{ . }}</div>{{ end }}
+  <nav class="th-tag-index" aria-label="태그 목록">
+    <div class="krds-tag-wrap large">
+      {{ range .Data.Terms.ByCount }}
+      {{ $id := printf "tag-%s" (md5 .Page.LinkTitle) }}
+      <a href="#{{ $id }}" class="krds-btn-tag link">{{ .Page.LinkTitle }}<span class="th-tag-count"><span class="th-sr-only"> </span>{{ .Count }}<span class="th-sr-only">개</span></span></a>
+      {{ end }}
+    </div>
+  </nav>
+  <div class="th-tag-sections">
+    {{ range .Data.Terms.ByCount }}
+    {{ $term := . }}
+    {{ $id := printf "tag-%s" (md5 .Page.LinkTitle) }}
+    <section id="{{ $id }}" class="th-tag-section" aria-labelledby="{{ $id }}-title">
+      <h2 id="{{ $id }}-title" class="th-tag-title">{{ .Page.LinkTitle }} <span class="th-tag-title-count">{{ .Count }}개</span></h2>
+      <ul class="th-post-list">
+        {{ range .Pages.ByDate.Reverse }}
+        <li class="th-post-item"><h3 class="th-post-title"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>{{ partial "post-meta.html" . }}</li>
+        {{ end }}
+      </ul>
+      {{ with site.GetPage "/search" }}<p class="th-tag-more"><a href="{{ .RelPermalink }}?tag={{ $term.Page.LinkTitle | urlquery }}">검색에서 이 태그로 찾기</a></p>{{ end }}
+    </section>
+    {{ end }}
+  </div>
 </div>
 {{ end }}

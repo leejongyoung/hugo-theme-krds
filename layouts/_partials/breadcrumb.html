@@ -1,9 +1,1 @@
-{{ if not .IsHome }}
-<nav class="breadcrumb" aria-label="현재 위치">
-  <ol>
-    <li><a href="{{ site.Home.RelPermalink }}">홈</a></li>
-    {{ range .Ancestors.Reverse }}{{ if not .IsHome }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></li>{{ end }}{{ end }}
-    <li aria-current="page">{{ .LinkTitle }}</li>
-  </ol>
-</nav>
-{{ end }}
+{{ if not .IsHome }}<nav class="krds-breadcrumb-wrap" aria-label="현재 경로" id="breadcrumb"><ol class="breadcrumb"><li class="home"><a href="{{ site.Home.RelPermalink }}" class="txt">홈</a></li>{{ range .Ancestors.Reverse }}{{ if not .IsHome }}<li><a href="{{ .RelPermalink }}" class="txt">{{ .LinkTitle }}</a></li>{{ end }}{{ end }}<li><span class="txt" aria-current="page">{{ .Title }}</span></li></ol></nav>{{ end }}

@@ -1,10 +1,1 @@
-{{ with site.GetPage "/docs" }}
-<nav class="docs-nav" aria-label="문서 메뉴">
-  <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
-  <ul>
-    {{ range .Pages.ByWeight }}
-    <li><a href="{{ .RelPermalink }}"{{ if eq $.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
-    {{ end }}
-  </ul>
-</nav>
-{{ end }}
+{{ $current := . }}{{ with site.Menus.docs }}<nav class="krds-side-navigation" aria-label="문서 메뉴"><h2 class="lnb-tit">문서</h2><ul class="lnb-list">{{ range $index, $group := . }}{{ $open := false }}{{ range $group.Children }}{{ if $current.IsMenuCurrent "docs" . }}{{ $open = true }}{{ end }}{{ end }}<li class="lnb-item{{ if $open }} active{{ end }}">{{ if $group.HasChildren }}<button type="button" class="lnb-btn lnb-toggle{{ if $open }} active{{ end }}" aria-controls="lnbmenu-{{ $index }}" aria-expanded="{{ $open }}">{{ $group.Name }}</button><div class="lnb-submenu"><ul id="lnbmenu-{{ $index }}">{{ range $group.Children }}<li class="lnb-subitem{{ if $current.IsMenuCurrent "docs" . }} active{{ end }}"><a href="{{ .URL | relURL }}" class="lnb-btn lnb-link"{{ if $current.IsMenuCurrent "docs" . }} aria-current="page"{{ end }}>{{ .Name }}</a></li>{{ end }}</ul></div>{{ else }}<a href="{{ $group.URL | relURL }}" class="lnb-btn lnb-link"{{ if $current.IsMenuCurrent "docs" $group }} aria-current="page"{{ end }}>{{ $group.Name }}</a>{{ end }}</li>{{ end }}</ul></nav>{{ end }}

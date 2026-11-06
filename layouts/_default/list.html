@@ -1,11 +1,1 @@
-{{ define "main" }}
-<div class="container page-shell">
-  {{ partial "breadcrumb.html" . }}
-  <header class="list-header"><h1>{{ .Title }}</h1>{{ with .Description }}<p>{{ . }}</p>{{ end }}</header>
-  {{ with .Content }}<div class="prose section-intro">{{ . }}</div>{{ end }}
-  <ul class="post-list">
-    {{ range .Paginator.Pages }}<li><h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>{{ partial "post-meta.html" . }}<p>{{ .Summary }}</p></li>{{ else }}<li>표시할 콘텐츠가 없습니다.</li>{{ end }}
-  </ul>
-  {{ partial "pagination.html" . }}
-</div>
-{{ end }}
+{{ define "main" }}<div class="th-wrap">{{ partial "breadcrumb.html" . }}<h1 class="th-page-title">{{ .Title }}</h1>{{ with .Description }}<p class="th-page-lead">{{ . }}</p>{{ end }}{{ with .Content }}<div class="th-prose">{{ . }}</div>{{ end }}<ul class="th-post-list">{{ range .Paginator.Pages }}<li class="th-post-item"><h2 class="th-post-title"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>{{ partial "post-meta.html" . }}<p class="th-excerpt">{{ .Summary | plainify | truncate 140 }}</p></li>{{ else }}<li>표시할 콘텐츠가 없습니다.</li>{{ end }}</ul>{{ partial "pagination.html" . }}</div>{{ end }}

@@ -1,26 +1,24 @@
-<header class="site-header">
-  <div class="header-utility container">
-    <a href="https://github.com/leejongyoung/hugo-theme-krds" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></a>
-    <div class="control-wrap">
-      <button class="utility-button" type="button" data-popover-button aria-expanded="false">글자 크기</button>
-      <div class="utility-popover" hidden>
-        <button type="button" data-scale="sm">작게</button><button type="button" data-scale="md">보통</button><button type="button" data-scale="lg">크게</button>
+<header id="krds-header">
+  <div class="header-in">
+    <div class="header-container">
+      <div class="inner">
+        <div class="header-utility">
+          <ul class="utility-list">
+            {{ range site.Menus.utility }}<li><a href="{{ .URL | relURL }}" class="krds-btn small text"{{ if strings.HasPrefix .URL "http" }} target="_blank" rel="noopener" title="새 창 열기"{{ end }}>{{ .Name }}{{ if strings.HasPrefix .URL "http" }} <i class="svg-icon ico-go"></i>{{ end }}</a></li>{{ end }}
+            <li><div class="krds-drop-wrap krds-resize" data-adjust="scale"><button type="button" class="krds-btn small text drop-btn">글자 크기 <i class="svg-icon ico-toggle"></i></button><div class="drop-menu"><div class="drop-in"><ul class="drop-list"><li><button type="button" class="item-link sm" data-adjust-scale="sm">작게</button></li><li><button type="button" class="item-link md active" data-adjust-scale="md">보통</button></li><li><button type="button" class="item-link lg" data-adjust-scale="lg">조금 크게</button></li><li><button type="button" class="item-link xlg" data-adjust-scale="xlg">크게</button></li><li><button type="button" class="item-link xxlg" data-adjust-scale="xxlg">가장 크게</button></li></ul><div class="drop-bottom"><button type="button" class="krds-btn medium text" data-adjust-scale="md"><i class="svg-icon ico-reset"></i> 초기화</button></div></div></div></div></li>
+            <li><div class="krds-drop-wrap th-mode"><button type="button" class="krds-btn small text drop-btn">화면 모드 <i class="svg-icon ico-toggle"></i></button><div class="drop-menu"><div class="drop-in"><ul class="drop-list"><li><button type="button" class="item-link active" data-th-mode="light">기본 (밝은 배경)</button></li><li><button type="button" class="item-link" data-th-mode="high-contrast">선명하게 (어두운 배경)</button></li><li><button type="button" class="item-link" data-th-mode="theme">시스템 설정</button></li></ul></div></div></div></li>
+          </ul>
+        </div>
+        <div class="header-branding">
+          <h2 class="logo"><a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a></h2>
+          <div class="header-actions">
+            {{ with site.GetPage "/search" }}<a href="{{ .RelPermalink }}" class="btn-navi sch"{{ if eq $.Section "search" }} aria-current="page"{{ end }}>검색</a>{{ end }}
+            <button type="button" class="btn-navi all" aria-controls="mobile-nav">전체메뉴</button>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="control-wrap">
-      <button class="utility-button" type="button" data-popover-button aria-expanded="false">화면 모드</button>
-      <div class="utility-popover" hidden>
-        <button type="button" data-mode="light">밝은 화면</button><button type="button" data-mode="high-contrast">고대비 화면</button><button type="button" data-mode="theme">시스템 설정</button>
-      </div>
-    </div>
+    {{ partial "main-menu.html" . }}
   </div>
-  <div class="header-brand container">
-    <p class="site-logo"><a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a></p>
-    <div class="header-actions">
-      {{ with site.GetPage "/search" }}<a class="header-search" href="{{ .RelPermalink }}">검색</a>{{ end }}
-      <button class="mobile-menu-button" type="button" aria-controls="mobile-menu" aria-expanded="false">전체메뉴</button>
-    </div>
-  </div>
-  {{ partial "main-menu.html" . }}
 </header>
 {{ partial "mobile-menu.html" . }}

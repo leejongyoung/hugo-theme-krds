@@ -1,5 +1,8 @@
 {{- $items := slice -}}
 {{- range where site.RegularPages "Params.searchExclude" "ne" true -}}
-  {{- $items = $items | append (dict "title" .Title "url" .RelPermalink "summary" (.Summary | plainify) "content" (.Plain | truncate 5000) "tags" (.Params.tags | default (slice)) "date" (.Date.Format "2006-01-02")) -}}
+  {{- $kind := cond (eq .Section "blog") "post" "page" -}}
+  {{- $date := "" -}}
+  {{- if eq $kind "post" }}{{ $date = .Date.Format "2006.01.02" }}{{ end -}}
+  {{- $items = $items | append (dict "t" .Title "u" .RelPermalink "k" $kind "d" $date "g" (.Params.tags | default (slice)) "l" (.Description | default .Summary | plainify) "c" (.Plain | truncate 3000)) -}}
 {{- end -}}
 {{- $items | jsonify -}}

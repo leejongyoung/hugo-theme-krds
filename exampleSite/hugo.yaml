@@ -1,5 +1,5 @@
 baseURL: https://leejongyoung.github.io/hugo-theme-krds/
-title: KRDS Hugo 테마 예제
+title: KRDS 테마 예제
 locale: ko-KR
 defaultContentLanguage: ko
 enableRobotsTXT: true
@@ -18,47 +18,100 @@ taxonomies:
 outputs:
   home: [HTML, RSS, JSON]
 
-
 markup:
   highlight:
     style: github-dark
+  goldmark:
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+            - ['\[', '\]']
+            - ['$$', '$$']
+          inline:
+            - ['\(', '\)']
+
 params:
-  description: 범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 만든 접근성 중심 Hugo 테마입니다.
+  description: 범정부 UI/UX 디자인시스템(KRDS)을 바탕으로 한 Hugo 테마의 예제 사이트입니다.
   footer:
-    description: Hugo Module로 설치하는 KRDS 기반 테마 예제 사이트입니다.
+    description: hugo-theme-krds 예제 사이트입니다.
     copyright: hugo-theme-krds
     contact:
       - label: 저장소
         value: github.com/leejongyoung/hugo-theme-krds
 
 menus:
+  utility:
+    - name: GitHub
+      url: https://github.com/leejongyoung/hugo-theme-krds
+      weight: 10
+  footer:
+    - name: KRDS 누리집
+      url: https://www.krds.go.kr
+      weight: 10
   main:
     - name: 소개
       pageRef: /about
       weight: 10
     - name: 문서
       pageRef: /docs
-      identifier: docs
+      identifier: main-docs
       weight: 20
     - name: 시작하기
       pageRef: /docs/getting-started
-      parent: docs
+      parent: main-docs
       weight: 21
     - name: 설정
       pageRef: /docs/configuration
-      parent: docs
+      parent: main-docs
       weight: 22
-    - name: 콘텐츠 작성
-      pageRef: /docs/content
-      parent: docs
+    - name: 마크다운 보기
+      pageRef: /docs/typography
+      parent: main-docs
       weight: 23
+    - name: 임베드와 수식
+      pageRef: /docs/embeds
+      parent: main-docs
+      weight: 24
     - name: 태그와 검색
       pageRef: /docs/search-tags
-      parent: docs
-      weight: 24
+      parent: main-docs
+      weight: 25
     - name: 블로그
       pageRef: /blog
       weight: 30
     - name: 태그
       pageRef: /tags
       weight: 40
+  docs:
+    - name: 시작하기
+      identifier: docs-start
+      weight: 10
+    - name: 소개
+      pageRef: /docs
+      parent: docs-start
+      weight: 11
+    - name: 설치와 시작
+      pageRef: /docs/getting-started
+      parent: docs-start
+      weight: 12
+    - name: 사용법
+      identifier: docs-usage
+      weight: 20
+    - name: 설정
+      pageRef: /docs/configuration
+      parent: docs-usage
+      weight: 21
+    - name: 마크다운 보기
+      pageRef: /docs/typography
+      parent: docs-usage
+      weight: 22
+    - name: 임베드와 수식
+      pageRef: /docs/embeds
+      parent: docs-usage
+      weight: 23
+    - name: 태그와 검색
+      pageRef: /docs/search-tags
+      parent: docs-usage
+      weight: 24

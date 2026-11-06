@@ -1,20 +1,32 @@
+{{- $raw := .RawContent | default "" -}}
+{{- $hasMath := or (strings.Contains $raw "$$") (strings.Contains $raw "\\(") (strings.Contains $raw "\\[") -}}
+{{- $hasMermaid := strings.Contains $raw "```mermaid" -}}
+{{- $hasChart := strings.Contains $raw "```chart" -}}
+{{- $hasEmbed := or (strings.Contains $raw "{{< youtube") (strings.Contains $raw "{{< vimeo") (strings.Contains $raw "{{< iframe") -}}
+{{- if isset .Params "math" }}{{ $hasMath = .Params.math }}{{ end -}}
+{{- if isset .Params "mermaid" }}{{ $hasMermaid = .Params.mermaid }}{{ end -}}
+{{- if isset .Params "chart" }}{{ $hasChart = .Params.chart }}{{ end -}}
+{{- if eq site.Params.krds.math false }}{{ $hasMath = false }}{{ end -}}
+{{- if eq site.Params.krds.mermaid false }}{{ $hasMermaid = false }}{{ end -}}
+{{- if eq site.Params.krds.chart false }}{{ $hasChart = false }}{{ end -}}
 <!doctype html>
-<html lang="{{ site.Language.Locale | default "ko" }}" data-krds-mode="light" data-krds-scale="md">
+<html lang="{{ site.Language.Locale | default "ko" }}">
 <head>
   {{ partial "head.html" . }}
 </head>
 <body>
-  <a class="skip-link" href="#content">본문 바로가기</a>
+  <script>(function(){try{var z=parseFloat(localStorage.getItem('krds-scale'));if(z>=0.5&&z<=2)document.body.style.zoom=z}catch(e){}}());</script>
+  <div id="krds-skip-link"><a href="#content">본문 바로가기</a></div>
   {{ partial "header.html" . }}
-  <main id="content" class="site-main" tabindex="-1">
+  <main id="content" class="th-main" tabindex="-1">
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "footer.html" . }}
-  {{ $theme := resources.Get "js/theme.js" | minify | fingerprint }}
-  <script src="{{ $theme.RelPermalink }}" integrity="{{ $theme.Data.Integrity }}" defer></script>
-  {{ if eq .Section "search" }}
-    {{ $search := resources.Get "js/search.js" | minify | fingerprint }}
-    <script src="{{ $search.RelPermalink }}" integrity="{{ $search.Data.Integrity }}" defer></script>
-  {{ end }}
+  {{ if $hasMath }}<script src="{{ "assets/vendor/katex/katex.min.js" | relURL }}" defer></script><script src="{{ "assets/vendor/katex/contrib/auto-render.min.js" | relURL }}" defer></script><script src="{{ "assets/js/math.js" | relURL }}" defer></script>{{ end }}
+  {{ if $hasChart }}<script src="{{ "assets/vendor/chartjs/chart.umd.js" | relURL }}" defer></script>{{ end }}
+  {{ if or $hasMermaid $hasChart $hasEmbed }}<script src="{{ "assets/js/embeds.js" | relURL }}" defer{{ if $hasMermaid }} data-mermaid="{{ "assets/vendor/mermaid/mermaid.esm.min.mjs" | relURL }}"{{ end }}></script>{{ end }}
+  {{ if eq .Section "search" }}<script src="{{ "assets/js/search.js" | relURL }}" defer></script>{{ end }}
+  <script src="{{ "assets/js/theme.js" | relURL }}" defer></script>
+  <script src="{{ "assets/js/vendor/krds-ui-script.js" | relURL }}" defer></script>
 </body>
 </html>

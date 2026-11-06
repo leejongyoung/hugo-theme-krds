@@ -1,22 +1,19 @@
 {{ define "main" }}
-<div class="container">
-  <section class="hero" aria-labelledby="hero-title">
-    {{ with .Params.hero.eyebrow }}<p class="hero-eyebrow">{{ . }}</p>{{ end }}
-    <h1 id="hero-title">{{ .Params.hero.title | default .Title | default site.Title }}</h1>
-    <p class="hero-lead">{{ .Params.hero.lead | default site.Params.description }}</p>
-    {{ with .Params.hero.actions }}<div class="hero-actions">{{ range . }}<a class="button {{ .style | default "primary" }}" href="{{ .url | relURL }}">{{ .text }}</a>{{ end }}</div>{{ end }}
+<div class="th-wrap">
+  <section class="th-hero" aria-labelledby="hero-title">
+    {{ with .Params.hero.eyebrow }}<p class="th-hero-eyebrow">{{ . }}</p>{{ end }}
+    <h1 id="hero-title" class="th-hero-title">{{ .Params.hero.title | default .Title | default site.Title }}</h1>
+    <p class="th-hero-lead">{{ .Params.hero.lead | default site.Params.description }}</p>
+    {{ with .Params.hero.actions }}<div class="th-hero-actions">{{ range . }}<a href="{{ strings.TrimPrefix "/" .url | relURL }}" class="krds-btn large {{ .style | default "primary" }}">{{ .text }}</a>{{ end }}</div>{{ end }}
   </section>
-
   {{ with .Params.features }}
-  <section class="section" aria-labelledby="features-title">
-    <h2 id="features-title">주요 기능</h2>
-    <ul class="card-grid">{{ range . }}<li class="card"><h3>{{ .title }}</h3><p>{{ .text }}</p>{{ with .url }}<a href="{{ . | relURL }}">자세히 보기 <span aria-hidden="true">→</span></a>{{ end }}</li>{{ end }}</ul>
+  <section class="th-section" aria-labelledby="features-title">
+    <h2 id="features-title" class="th-section-title">{{ $.Params.features_title | default "주요 기능" }}</h2>
+    <ul class="th-cards">{{ range . }}<li class="th-card"><h3 class="th-card-title">{{ .title }}</h3><p class="th-card-text">{{ .text }}</p>{{ with .url }}<a class="krds-btn medium text th-card-link" href="{{ strings.TrimPrefix "/" . | relURL }}">자세히 보기 <i class="svg-icon ico-angle right"></i></a>{{ end }}</li>{{ end }}</ul>
   </section>
   {{ end }}
-
-  {{ with .Content }}<section class="section prose">{{ . }}</section>{{ end }}
-
+  {{ with .Content }}<section class="th-section"><div class="th-prose">{{ . }}</div></section>{{ end }}
   {{ $posts := where site.RegularPages "Section" "blog" }}
-  {{ if $posts }}<section class="section" aria-labelledby="recent-title"><h2 id="recent-title">최근 글</h2><ul class="post-list">{{ range first 3 $posts.ByDate.Reverse }}<li><h3><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>{{ partial "post-meta.html" . }}<p>{{ .Summary }}</p></li>{{ end }}</ul></section>{{ end }}
+  {{ if $posts }}<section class="th-section" aria-labelledby="recent-title"><h2 id="recent-title" class="th-section-title">최근 글</h2><ul class="th-post-list">{{ range first 3 $posts.ByDate.Reverse }}<li class="th-post-item"><h3 class="th-post-title"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>{{ partial "post-meta.html" . }}</li>{{ end }}</ul></section>{{ end }}
 </div>
 {{ end }}

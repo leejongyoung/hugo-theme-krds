@@ -1,0 +1,11 @@
+{{- $ratio := .Ratio | default "16 / 9" -}}{{- if not (findRE `^[0-9.]+\s*/\s*[0-9.]+$` $ratio) }}{{ $ratio = "16 / 9" }}{{ end -}}
+{{- if not (strings.HasPrefix .Src "https://") -}}<p class="th-embed-error" role="alert">임베드 주소는 https:// 로 시작해야 합니다.</p>{{- else -}}
+<figure class="th-embed"{{ if ne .Load "eager" }} data-th-embed data-embed-src="{{ .Src }}" data-embed-title="{{ .Title }}"{{ with .Allow }} data-embed-allow="{{ . }}"{{ end }}{{ with .Sandbox }} data-embed-sandbox="{{ . }}"{{ end }}{{ end }}>
+  <div class="th-embed-frame" style="--th-embed-ratio: {{ $ratio }}">
+    {{ if eq .Load "eager" }}<iframe src="{{ .Src }}" title="{{ .Title }}" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen{{ with .Allow }} allow="{{ . }}"{{ end }}{{ with .Sandbox }} sandbox="{{ . }}"{{ end }}></iframe>{{ else }}
+    {{ with .Thumb }}<img class="th-embed-thumb" src="{{ . }}" alt="" loading="lazy">{{ end }}
+    <div class="th-embed-cover"><button type="button" class="krds-btn large primary th-embed-play">{{ .Button | default "재생하기" }}<span class="th-sr-only">: {{ .Title }}</span></button><p class="th-embed-note">{{ .Provider | default "외부 서비스" }} 서버에 연결됩니다. 버튼을 누르기 전에는 연결하지 않습니다.</p></div>{{ end }}
+  </div>
+  <figcaption class="th-embed-caption">{{ with .Caption }}{{ . }}{{ if $.Link }} · {{ end }}{{ end }}{{ with .Link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $.Provider | default "외부 서비스" }}에서 보기<span class="th-sr-only"> (새 창 열림)</span></a>{{ end }}</figcaption>
+</figure>
+{{- end -}}

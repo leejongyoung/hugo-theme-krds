@@ -1,9 +1,1 @@
-{{ define "main" }}
-<div class="container page-shell">
-  {{ partial "breadcrumb.html" . }}
-  <article class="article">
-    <header class="article-header"><h1>{{ .Title }}</h1>{{ with .Description }}<p>{{ . }}</p>{{ end }}{{ if eq .Section "blog" }}{{ partial "post-meta.html" . }}{{ end }}</header>
-    <div class="prose">{{ .Content }}</div>
-  </article>
-</div>
-{{ end }}
+{{ define "main" }}<div class="th-wrap">{{ partial "breadcrumb.html" . }}<article><h1 class="th-page-title">{{ .Title }}</h1>{{ with .Description }}<p class="th-page-lead">{{ . }}</p>{{ end }}<div class="th-prose">{{ .Content }}</div></article></div>{{ end }}

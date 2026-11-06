@@ -1,0 +1,5 @@
+{{- $id := .Get "id" | default "" -}}
+{{- if not (findRE `^[A-Za-z0-9_-]{11}$` $id) -}}<p class="th-embed-error" role="alert">YouTube 동영상 ID를 확인해 주세요(11자리 영문·숫자·-·_).</p>{{- else -}}
+{{- $start := int (.Get "start" | default 0) -}}{{- $src := printf "https://www.youtube-nocookie.com/embed/%s?autoplay=1&rel=0&playsinline=1" $id -}}{{- $link := printf "https://www.youtube.com/watch?v=%s" $id -}}{{- if gt $start 0 }}{{ $src = printf "%s&start=%d" $src $start }}{{ $link = printf "%s&t=%ds" $link $start }}{{ end -}}
+{{ partial "embed-frame.html" (dict "Src" $src "Title" (.Get "title" | default "YouTube 동영상") "Provider" "YouTube" "Link" $link "Caption" (.Get "caption") "Ratio" (.Get "ratio") "Allow" "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" "Button" "동영상 재생") }}
+{{- end -}}

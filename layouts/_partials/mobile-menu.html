@@ -1,21 +1,15 @@
-<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title" hidden>
-  <div class="mobile-menu-head">
-    <strong id="mobile-menu-title">전체메뉴</strong>
-    <button type="button" data-mobile-close aria-label="전체메뉴 닫기">닫기</button>
+{{ with site.Menus.main }}
+<div id="mobile-nav" class="krds-main-menu-mobile" role="dialog" aria-modal="true" aria-label="전체 메뉴">
+  <div class="gnb-wrap">
+    <div class="gnb-header"><div class="gnb-utils"><ul class="utility-list"><li><button type="button" class="krds-btn xsmall text" data-th-scale-step="-1">글자 작게</button></li><li><button type="button" class="krds-btn xsmall text" data-th-scale-step="0">글자 보통</button></li><li><button type="button" class="krds-btn xsmall text" data-th-scale-step="1">글자 크게</button></li></ul><ul class="utility-list"><li><button type="button" class="krds-btn xsmall text" data-th-mode="light">밝은 배경</button></li><li><button type="button" class="krds-btn xsmall text" data-th-mode="high-contrast">어두운 배경</button></li><li><button type="button" class="krds-btn xsmall text" data-th-mode="theme">시스템 설정</button></li></ul></div></div>
+    <div class="gnb-body"><div class="gnb-menu"><div class="menu-wrap"><ul>
+      <li><a href="#mGnb-anchor-links" class="gnb-main-trigger">바로가기</a></li>
+      {{ range $index, $item := . }}{{ if $item.HasChildren }}<li><a href="#mGnb-anchor-{{ $index }}" class="gnb-main-trigger">{{ $item.Name }}</a></li>{{ end }}{{ end }}
+    </ul></div><div class="submenu-wrap">
+      <div class="gnb-sub-list" id="mGnb-anchor-links"><h2 class="sub-title">바로가기</h2><ul>{{ range . }}{{ if not .HasChildren }}<li><a href="{{ .URL | relURL }}" class="gnb-sub-trigger">{{ .Name }}</a></li>{{ end }}{{ end }}</ul></div>
+      {{ range $index, $item := . }}{{ if $item.HasChildren }}<div class="gnb-sub-list" id="mGnb-anchor-{{ $index }}"><h2 class="sub-title">{{ $item.Name }}</h2><ul>{{ range $item.Children }}<li><a href="{{ .URL | relURL }}" class="gnb-sub-trigger">{{ .Name }}</a></li>{{ end }}</ul></div>{{ end }}{{ end }}
+    </div></div></div>
+    <button type="button" class="krds-btn medium icon" id="close-nav"><span class="sr-only">전체메뉴 닫기</span><i class="svg-icon ico-popup-close"></i></button>
   </div>
-  <nav aria-label="모바일 주 메뉴">
-    <ul>
-      {{ range site.Menus.main }}
-      <li>
-        {{ if .HasChildren }}
-          <strong>{{ .Name }}</strong>
-          <ul>{{ range .Children }}<li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>{{ end }}</ul>
-        {{ else }}
-          <a href="{{ .URL | relURL }}">{{ .Name }}</a>
-        {{ end }}
-      </li>
-      {{ end }}
-    </ul>
-  </nav>
 </div>
-<div class="mobile-backdrop" data-mobile-close hidden></div>
+{{ end }}

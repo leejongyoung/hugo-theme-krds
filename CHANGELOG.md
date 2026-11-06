@@ -1,5 +1,22 @@
 # 변경 이력
 
+## [1.1.0] - 2026-11-07
+
+### 추가
+- KaTeX 수식, Mermaid 다이어그램, Chart.js 차트의 페이지별 지연 로딩
+- YouTube·Vimeo·일반 iframe privacy-first shortcode와 자체 video·audio shortcode
+- Jekyll 데모와 같은 예제 문서·글·태그 분포
+
+### 변경
+- Jekyll 테마와 동일한 KRDS CSS, Pretendard GOV, icon 자산 및 header·GNB·footer DOM으로 교체
+- 소개, 문서, 블로그, 태그, 검색의 1440px PC layout과 360px 반응형 layout을 동일하게 정렬
+- README와 저장소 description·topics를 Jekyll 테마 구성에 맞춤
+
+### 수정
+- 모바일 전체메뉴 Escape 닫기와 opener 포커스 복귀
+- Hugo 검색 색인을 Jekyll 검색 runtime schema와 일치시킴
+- project Pages base path에서 자체 video·audio·caption URL이 404가 되던 문제
+
 ## [1.0.0] - 2026-11-07
 
 ### 추가

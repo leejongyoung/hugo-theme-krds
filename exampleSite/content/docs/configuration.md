@@ -1,30 +1,37 @@
 ---
 title: 설정
-description: 사이트 메뉴, footer, 페이지 이동과 출력 형식을 설정합니다.
+description: 사이트 이름, 푸터, 색과 글꼴을 바꾸는 방법입니다.
 weight: 20
-tags: [Hugo, 설정]
+tags: [설정, 가이드]
 ---
 
-## 사이트 정보
+## hugo.yaml
 
-`title`, `languageCode`, `params.description`을 사이트에 맞게 바꿉니다.
+| 키 | 설명 |
+| :--- | :--- |
+| `params.description` | 사이트 설명 |
+| `params.footer.description` | 푸터 설명 |
+| `params.footer.contact` | 푸터 연락처 목록(`label`, `value`) |
+| `params.customCSS` | 테마 CSS 뒤에 불러올 사이트 CSS 경로 목록 |
+| `pagination.pagerSize` | 글 목록 한 페이지의 글 수 |
+| `outputs.home` | 검색에 필요한 `JSON`을 포함한 홈 출력 형식 |
 
-## 주 메뉴
+## 색과 글꼴 바꾸기
 
-Hugo의 `menus.main`을 사용합니다. 한 단계의 `parent` 관계를 지정하면 PC GNB와 모바일 전체메뉴에 같은 구조가 표시됩니다.
-
-## 검색 출력
-
-검색을 쓰려면 홈 출력에 JSON을 추가합니다.
-
-```yaml
-outputs:
-  home: [HTML, RSS, JSON]
-```
-
-## 페이지 이동
+KRDS 토큰은 원본을 고치지 않고 CSS 변수를 다시 선언해서 바꿉니다. 사이트의 CSS를 `params.customCSS`로 테마 스타일 뒤에 불러옵니다.
 
 ```yaml
-pagination:
-  pagerSize: 10
+params:
+  customCSS:
+    - css/custom.css
 ```
+
+```css
+:root {
+  --krds-typo-font-type: "Pretendard GOV", sans-serif;
+}
+```
+
+## 푸터 출처 표시
+
+푸터의 KRDS 출처 문구는 KRDS 이용 조건에 따른 것이므로 지우지 않습니다.
