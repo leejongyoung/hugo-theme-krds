@@ -1,0 +1,4 @@
+<div class="post-meta">
+  {{ with .Date }}<time datetime="{{ .Format "2006-01-02" }}">{{ .Format "2006. 01. 02." }}</time>{{ end }}
+  {{ with .Params.tags }}<ul class="tag-inline" aria-label="태그">{{ range . }}<li><a href="{{ (site.GetPage (printf "/tags/%s" (. | urlize))).RelPermalink }}">#{{ . }}</a></li>{{ end }}</ul>{{ end }}
+</div>

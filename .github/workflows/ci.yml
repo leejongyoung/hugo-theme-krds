@@ -1,0 +1,24 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-example:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v3
+        with:
+          cache: false
+      - name: Resolve Hugo module
+        working-directory: exampleSite
+        run: mise exec -- hugo mod graph
+      - name: Build example site
+        working-directory: exampleSite
+        run: mise exec -- hugo --gc --minify --panicOnWarning

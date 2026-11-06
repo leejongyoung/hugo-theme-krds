@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ site.Language.Locale | default "ko" }}" data-krds-mode="light" data-krds-scale="md">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <a class="skip-link" href="#content">본문 바로가기</a>
+  {{ partial "header.html" . }}
+  <main id="content" class="site-main" tabindex="-1">
+    {{ block "main" . }}{{ end }}
+  </main>
+  {{ partial "footer.html" . }}
+  {{ $theme := resources.Get "js/theme.js" | minify | fingerprint }}
+  <script src="{{ $theme.RelPermalink }}" integrity="{{ $theme.Data.Integrity }}" defer></script>
+  {{ if eq .Section "search" }}
+    {{ $search := resources.Get "js/search.js" | minify | fingerprint }}
+    <script src="{{ $search.RelPermalink }}" integrity="{{ $search.Data.Integrity }}" defer></script>
+  {{ end }}
+</body>
+</html>

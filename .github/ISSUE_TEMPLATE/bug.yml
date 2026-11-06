@@ -1,0 +1,26 @@
+name: 버그 제보
+description: 재현 가능한 테마 문제를 알려 주세요.
+title: "bug: "
+labels: [bug]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 문제
+      description: 기대한 동작과 실제 동작을 적어 주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 재현 방법
+      description: Hugo 버전, 설정, 콘텐츠와 순서를 적어 주세요.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 테마 버전
+      placeholder: v1.0.0
+    validations:
+      required: true

@@ -1,0 +1,22 @@
+{{ define "main" }}
+<div class="container">
+  <section class="hero" aria-labelledby="hero-title">
+    {{ with .Params.hero.eyebrow }}<p class="hero-eyebrow">{{ . }}</p>{{ end }}
+    <h1 id="hero-title">{{ .Params.hero.title | default .Title | default site.Title }}</h1>
+    <p class="hero-lead">{{ .Params.hero.lead | default site.Params.description }}</p>
+    {{ with .Params.hero.actions }}<div class="hero-actions">{{ range . }}<a class="button {{ .style | default "primary" }}" href="{{ .url | relURL }}">{{ .text }}</a>{{ end }}</div>{{ end }}
+  </section>
+
+  {{ with .Params.features }}
+  <section class="section" aria-labelledby="features-title">
+    <h2 id="features-title">주요 기능</h2>
+    <ul class="card-grid">{{ range . }}<li class="card"><h3>{{ .title }}</h3><p>{{ .text }}</p>{{ with .url }}<a href="{{ . | relURL }}">자세히 보기 <span aria-hidden="true">→</span></a>{{ end }}</li>{{ end }}</ul>
+  </section>
+  {{ end }}
+
+  {{ with .Content }}<section class="section prose">{{ . }}</section>{{ end }}
+
+  {{ $posts := where site.RegularPages "Section" "blog" }}
+  {{ if $posts }}<section class="section" aria-labelledby="recent-title"><h2 id="recent-title">최근 글</h2><ul class="post-list">{{ range first 3 $posts.ByDate.Reverse }}<li><h3><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>{{ partial "post-meta.html" . }}<p>{{ .Summary }}</p></li>{{ end }}</ul></section>{{ end }}
+</div>
+{{ end }}

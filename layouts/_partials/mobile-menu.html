@@ -1,0 +1,21 @@
+<div class="mobile-menu" id="mobile-menu" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title" hidden>
+  <div class="mobile-menu-head">
+    <strong id="mobile-menu-title">전체메뉴</strong>
+    <button type="button" data-mobile-close aria-label="전체메뉴 닫기">닫기</button>
+  </div>
+  <nav aria-label="모바일 주 메뉴">
+    <ul>
+      {{ range site.Menus.main }}
+      <li>
+        {{ if .HasChildren }}
+          <strong>{{ .Name }}</strong>
+          <ul>{{ range .Children }}<li><a href="{{ .URL | relURL }}">{{ .Name }}</a></li>{{ end }}</ul>
+        {{ else }}
+          <a href="{{ .URL | relURL }}">{{ .Name }}</a>
+        {{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </nav>
+</div>
+<div class="mobile-backdrop" data-mobile-close hidden></div>

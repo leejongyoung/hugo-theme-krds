@@ -1,0 +1,26 @@
+<header class="site-header">
+  <div class="header-utility container">
+    <a href="https://github.com/leejongyoung/hugo-theme-krds" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></a>
+    <div class="control-wrap">
+      <button class="utility-button" type="button" data-popover-button aria-expanded="false">글자 크기</button>
+      <div class="utility-popover" hidden>
+        <button type="button" data-scale="sm">작게</button><button type="button" data-scale="md">보통</button><button type="button" data-scale="lg">크게</button>
+      </div>
+    </div>
+    <div class="control-wrap">
+      <button class="utility-button" type="button" data-popover-button aria-expanded="false">화면 모드</button>
+      <div class="utility-popover" hidden>
+        <button type="button" data-mode="light">밝은 화면</button><button type="button" data-mode="high-contrast">고대비 화면</button><button type="button" data-mode="theme">시스템 설정</button>
+      </div>
+    </div>
+  </div>
+  <div class="header-brand container">
+    <p class="site-logo"><a href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a></p>
+    <div class="header-actions">
+      {{ with site.GetPage "/search" }}<a class="header-search" href="{{ .RelPermalink }}">검색</a>{{ end }}
+      <button class="mobile-menu-button" type="button" aria-controls="mobile-menu" aria-expanded="false">전체메뉴</button>
+    </div>
+  </div>
+  {{ partial "main-menu.html" . }}
+</header>
+{{ partial "mobile-menu.html" . }}

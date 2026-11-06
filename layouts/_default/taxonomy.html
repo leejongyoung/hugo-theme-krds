@@ -1,0 +1,7 @@
+{{ define "main" }}
+<div class="container page-shell">
+  {{ partial "breadcrumb.html" . }}
+  <header class="list-header"><h1>{{ .Title }}</h1><p>주제별 콘텐츠를 찾아보세요.</p></header>
+  <ul class="tag-cloud">{{ range .Data.Terms.Alphabetical }}<li><a href="{{ .Page.RelPermalink }}">#{{ .Page.LinkTitle }} <span>{{ .Count }}</span></a></li>{{ end }}</ul>
+</div>
+{{ end }}

@@ -1,0 +1,28 @@
+{{ $current := . }}
+{{ with site.Menus.main }}
+<nav class="site-nav" aria-label="주 메뉴">
+  <div class="container">
+    <ul class="gnb-menu">
+      {{ range $index, $item := . }}
+      <li>
+        {{ if $item.HasChildren }}
+          {{ $selected := or ($current.IsMenuCurrent "main" $item) ($current.HasMenuCurrent "main" $item) }}
+          <button type="button" class="gnb-trigger{{ if $selected }} selected{{ end }}" aria-expanded="false" aria-controls="gnb-panel-{{ $index }}">{{ $item.Name }}</button>
+          <div class="gnb-panel" id="gnb-panel-{{ $index }}" hidden>
+            <div class="gnb-main-list container">
+              <ul>
+                {{ range $item.Children }}
+                <li><a href="{{ .URL | relURL }}"{{ if $current.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }} <span aria-hidden="true">→</span></a></li>
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+        {{ else }}
+          <a class="gnb-link{{ if $current.IsMenuCurrent "main" $item }} selected{{ end }}" href="{{ $item.URL | relURL }}"{{ if $current.IsMenuCurrent "main" $item }} aria-current="page"{{ end }}>{{ $item.Name }}</a>
+        {{ end }}
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</nav>
+{{ end }}

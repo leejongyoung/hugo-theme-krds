@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="container page-shell">
+  {{ partial "breadcrumb.html" . }}
+  <div class="docs-grid">
+    {{ partial "docs-nav.html" . }}
+    <article class="article docs-article">
+      <header class="article-header"><h1>{{ .Title }}</h1>{{ with .Description }}<p>{{ . }}</p>{{ end }}</header>
+      <div class="prose">{{ .Content }}</div>
+    </article>
+    {{ partial "toc.html" . }}
+  </div>
+</div>
+{{ end }}

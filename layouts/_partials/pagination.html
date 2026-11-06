@@ -1,0 +1,7 @@
+{{ with .Paginator }}{{ if gt .TotalPages 1 }}
+<nav class="pagination" aria-label="페이지 이동">
+  {{ with .Prev }}<a href="{{ .URL }}" rel="prev">이전</a>{{ end }}
+  <span>{{ .PageNumber }} / {{ .TotalPages }}</span>
+  {{ with .Next }}<a href="{{ .URL }}" rel="next">다음</a>{{ end }}
+</nav>
+{{ end }}{{ end }}

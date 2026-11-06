@@ -1,0 +1,9 @@
+{{ define "main" }}
+<div class="container page-shell">
+  {{ partial "breadcrumb.html" . }}
+  <article class="article">
+    <header class="article-header"><h1>{{ .Title }}</h1>{{ with .Description }}<p>{{ . }}</p>{{ end }}{{ if eq .Section "blog" }}{{ partial "post-meta.html" . }}{{ end }}</header>
+    <div class="prose">{{ .Content }}</div>
+  </article>
+</div>
+{{ end }}

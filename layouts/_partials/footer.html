@@ -1,0 +1,15 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <strong class="footer-logo">{{ site.Title }}</strong>
+      <p>{{ site.Params.footer.description | default site.Params.description }}</p>
+    </div>
+    {{ with site.Params.footer.contact }}
+    <dl class="footer-contact">{{ range . }}<div><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>{{ end }}</dl>
+    {{ end }}
+  </div>
+  <div class="container footer-bottom">
+    <p>© {{ now.Year }} {{ site.Params.footer.copyright | default site.Title }}</p>
+    <a href="https://www.krds.go.kr" target="_blank" rel="noopener">KRDS <span aria-hidden="true">↗</span><span class="sr-only">(새 창)</span></a>
+  </div>
+</footer>

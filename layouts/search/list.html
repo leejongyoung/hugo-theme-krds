@@ -1,0 +1,11 @@
+{{ define "main" }}
+<div class="container page-shell search-page" data-search-root data-index="{{ "index.json" | relURL }}">
+  {{ partial "breadcrumb.html" . }}
+  <header class="list-header"><h1>{{ .Title }}</h1><p>{{ .Description }}</p></header>
+  <form class="search-form" role="search"><label for="site-search">검색어</label><div><input id="site-search" name="q" type="search" autocomplete="off"><button class="button primary" type="submit">검색</button></div></form>
+  <fieldset class="search-tags"><legend>태그로 좁히기</legend><div data-search-tags></div></fieldset>
+  <p class="search-status" data-search-status role="status" aria-live="polite">검색 색인을 불러오는 중입니다.</p>
+  <ul class="post-list search-results" data-search-results></ul>
+  <div class="search-more" hidden><button class="button secondary" type="button" data-search-more>결과 더 보기</button></div>
+</div>
+{{ end }}
