@@ -1,6 +1,6 @@
 ---
 title: Hugo Theme KRDS 첫 공개
-date: 2026-11-07
+date: 2026-11-07T00:00:00+09:00
 tags: [소식, Hugo]
 description: Hugo Module 기반 KRDS 테마의 첫 버전을 공개합니다.
 ---
