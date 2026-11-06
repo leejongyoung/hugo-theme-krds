@@ -23,7 +23,7 @@ KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블
 
 ```sh
 hugo mod init github.com/example/my-site
-hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.1.0
+hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.1.1
 ```
 
 ```yaml
@@ -33,7 +33,7 @@ module:
     - path: github.com/leejongyoung/hugo-theme-krds
 ```
 
-`@v1.1.0`처럼 태그를 붙여 버전을 고정할 수 있습니다. 이 저장소의 `exampleSite/go.mod`도 로컬 테마를 Module로 불러 빌드합니다.
+`@v1.1.1`처럼 태그를 붙여 버전을 고정할 수 있습니다. 이 저장소의 `exampleSite/go.mod`도 로컬 테마를 Module로 불러 빌드합니다.
 
 ### 방법 2. Git submodule
 
@@ -160,14 +160,14 @@ markup:
 | 수식 | 본문에 `$$ ... $$` (인라인은 `\( ... \)`) | KaTeX |
 | 다이어그램 | `mermaid` 코드 블록 | Mermaid |
 | 차트 | `chart` 코드 블록에 Chart.js 설정을 **JSON**으로 | Chart.js |
-| YouTube | `{{</* youtube id="영상ID" title="제목" */>}}` | 없음(iframe) |
+| YouTube | `{{</* youtube id="영상ID" title="제목" */>}}` 또는 `url="https://youtu.be/..."` | 없음(iframe) |
 | Vimeo | `{{</* vimeo id="123456" title="제목" */>}}` | 없음(iframe) |
 | 그 밖의 페이지 | `{{</* iframe url="https://..." title="제목" */>}}` | 없음(iframe, sandbox) |
 
 - **수식:** 달러 기호가 든 일반 문장(`$4와 $6`)은 수식으로 바뀌지 않습니다. 단일 `$ ... $`는 지원하지 않습니다. KaTeX가 MathML도 함께 내보냅니다.
 - **다이어그램:** 화면 모드를 바꾸면 현재 색으로 다시 그리고, "다이어그램 원문 보기"를 제공합니다. 색은 KRDS 토큰에서 가져옵니다.
 - **차트:** 색은 KRDS 색을 자동으로 쓰고 점 모양도 달리합니다. "데이터 표로 보기"가 자동으로 생깁니다. JSON만 받으므로 함수(콜백)는 쓸 수 없습니다. `title`·`description`은 접근성용 추가 키입니다.
-- **개인정보:** YouTube는 `youtube-nocookie.com`, Vimeo는 `dnt=1`을 씁니다. 재생 버튼을 누르기 전에는 외부에 요청하지 않으며 일반 iframe에는 `sandbox`가 기본으로 걸립니다.
+- **개인정보:** YouTube는 `youtube-nocookie.com`, Vimeo는 `dnt=1`을 씁니다. 재생 버튼을 누르기 전에는 외부에 요청하지 않으며 일반 iframe에는 `sandbox`가 기본으로 걸립니다. YouTube `thumbnail=true`는 선택한 경우에만 페이지 로드 때 `i.ytimg.com`에 연결합니다.
 - **끄기:** 페이지 front matter의 `math`·`mermaid`·`chart`를 `true`/`false`로 지정하거나, `hugo.yaml`의 `params.krds.math`·`params.krds.mermaid`·`params.krds.chart`를 `false`로 둡니다.
 - **접근성:** `title`(영상 제목)을 꼭 적으세요. 스크린리더가 iframe 이름으로 읽습니다. 자체 호스팅 영상에는 자막을 함께 넣는 것을 권장합니다.
 

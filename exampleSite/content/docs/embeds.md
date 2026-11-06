@@ -73,12 +73,12 @@ sequenceDiagram
 ### YouTube
 
 ```go-html-template
-{{</* youtube id="jNQXAC9IVRw" title="Me at the zoo (YouTube 최초의 영상)" caption="YouTube 최초로 올라온 영상" */>}}
+{{</* youtube url="https://youtu.be/jNQXAC9IVRw" title="Me at the zoo (YouTube 최초의 영상)" caption="YouTube 최초로 올라온 영상" */>}}
 ```
 
-{{< youtube id="jNQXAC9IVRw" title="Me at the zoo (YouTube 최초의 영상)" caption="YouTube 최초로 올라온 영상" >}}
+{{< youtube url="https://youtu.be/jNQXAC9IVRw" title="Me at the zoo (YouTube 최초의 영상)" caption="YouTube 최초로 올라온 영상" >}}
 
-`youtube-nocookie.com` 도메인을 쓰고, 버튼을 누를 때만 연결합니다. `start=30`처럼 시작 시간(초)을 지정할 수 있습니다.
+`youtube-nocookie.com` 도메인을 쓰고, 버튼을 누를 때만 연결합니다. `id` 대신 `url`을 쓸 수 있고 `start=30`으로 시작 시간(초)을 지정합니다. `thumbnail=true`는 미리보기 이미지를 표시하지만 페이지를 열 때 `i.ytimg.com`에 연결합니다.
 
 ### Vimeo
 

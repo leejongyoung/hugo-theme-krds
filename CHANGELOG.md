@@ -1,5 +1,16 @@
 # 변경 이력
 
+## [1.1.1] - 2026-11-07
+
+### 수정
+- Hugo가 동적 `--th-embed-ratio`를 `ZgotmplZ`로 치환해 YouTube·Vimeo·iframe frame이 2px로 붕괴하고 버튼이 클릭되지 않던 문제
+- 자체 video의 사용자 지정 `ratio`가 적용되지 않던 문제
+- YouTube `url=` 형식이 Go RE2 비호환 정규식으로 실패하던 문제
+
+### 추가
+- YouTube `thumbnail=true`와 URL 형식 ID 추출
+- 일반 iframe의 provider 이름 자동 추론
+
 ## [1.1.0] - 2026-11-07
 
 ### 추가

@@ -1,2 +1,2 @@
-{{- $url := .Get "url" | default "" -}}{{- $provider := .Get "provider" | default "외부 서비스" -}}{{- $sandbox := .Get "sandbox" | default "allow-scripts allow-same-origin allow-popups allow-forms" -}}
+{{- $url := .Get "url" | default "" -}}{{- $parsed := urls.Parse $url -}}{{- $provider := .Get "provider" | default $parsed.Host -}}{{- $provider = $provider | default "외부 서비스" -}}{{- $sandbox := .Get "sandbox" | default "allow-scripts allow-same-origin allow-popups allow-forms" -}}
 {{ partial "embed-frame.html" (dict "Src" $url "Title" (.Get "title" | default $provider) "Provider" $provider "Link" (.Get "link" | default $url) "Caption" (.Get "caption") "Ratio" (.Get "ratio" | default "4 / 3") "Sandbox" $sandbox "Allow" (.Get "allow") "Load" (.Get "load") "Button" "불러오기") }}
