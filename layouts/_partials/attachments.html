@@ -1,0 +1,11 @@
+{{- /* front matter `attachments:` 목록을 내려받기 목록으로 그린다(카드만, 미리보기 없음). */ -}}
+{{- with .Params.attachments -}}
+<section class="th-attachments" aria-label="첨부 파일">
+  <h2 class="th-attachments-title">첨부 파일</h2>
+  <ul class="th-attachments-list">
+    {{- range . -}}
+    <li class="th-attachments-item">{{ partial "attachment-item.html" (dict "src" .src "title" .title "desc" (.desc | default .caption) "size" .size "preview" "false" "preview_pdf" .preview_pdf "viewer" .viewer "Page" $.Page) }}</li>
+    {{- end -}}
+  </ul>
+</section>
+{{- end -}}

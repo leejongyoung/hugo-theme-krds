@@ -1,0 +1,59 @@
+{{- /*
+  첨부 파일 하나를 미리보기 + 파일 정보(제목·설명·용량·내려받기)로 그린다.
+  입력(dict): src(필수), title(없으면 파일 이름), desc, size,
+    preview(기본 true, "false"면 카드만), preview_pdf(오피스 문서의 PDF 변환본),
+    viewer("none" 기본 | "google" | "office"), Page(호출 쪽 .Page).
+  미리보기: pdf·이미지는 내부 렌더(외부 연결 없음). 오피스(hwp·hwpx·docx·xlsx·cell 등)는
+  preview_pdf가 있으면 그 PDF를, viewer를 지정하면 외부 뷰어를 클릭 후 불러오기로,
+  둘 다 없으면 내려받기 카드만 보여준다.
+*/ -}}
+{{- $src := .src | default "" -}}
+{{- if eq $src "" -}}
+<p class="th-embed-error" role="alert">첨부 파일 주소(src)가 필요합니다.</p>
+{{- else -}}
+{{- $title := .title | default (path.Base $src) -}}
+{{- $srcURL := $src -}}
+{{- if not (strings.HasPrefix $src "http") }}{{ $srcURL = strings.TrimPrefix "/" $src | relURL }}{{ end -}}
+{{- $kind := partial "attachment-kind.html" (dict "src" $src) | strings.TrimSpace -}}
+{{- $kindLabel := "파일" -}}
+{{- if eq $kind "pdf" }}{{ $kindLabel = "PDF" }}{{ else if eq $kind "image" }}{{ $kindLabel = "이미지" }}{{ else if eq $kind "office" }}{{ $kindLabel = "문서" }}{{ end -}}
+{{- $wantPreview := true -}}
+{{- if or (eq .preview false) (eq .preview "false") (eq .preview "no") (eq .preview "off") }}{{ $wantPreview = false }}{{ end -}}
+{{- $previewPDF := .preview_pdf | default "" -}}
+{{- $previewPDFURL := "" -}}
+{{- if $previewPDF -}}
+  {{- $previewPDFURL = $previewPDF -}}
+  {{- if not (strings.HasPrefix $previewPDF "http") }}{{ $previewPDFURL = strings.TrimPrefix "/" $previewPDF | relURL }}{{ end -}}
+{{- end -}}
+{{- $viewer := .viewer | default "none" | lower -}}
+{{- if and (ne $viewer "google") (ne $viewer "office") }}{{ $viewer = "none" }}{{ end -}}
+{{- $abs := $src -}}
+{{- if not (strings.HasPrefix $src "http") }}{{ $abs = strings.TrimPrefix "/" $src | absURL }}{{ end -}}
+{{- $absOK := strings.HasPrefix $abs "https://" -}}
+<figure class="th-embed th-attachment th-attachment-{{ $kind }}">
+  {{- if $wantPreview -}}
+    {{- if eq $kind "pdf" -}}
+  <div class="th-attachment-preview"><object data="{{ $srcURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
+    {{- else if eq $kind "image" -}}
+  <div class="th-attachment-preview"><img src="{{ $srcURL }}" alt="{{ $title }}" loading="lazy"></div>
+    {{- else if eq $kind "office" -}}
+      {{- if $previewPDFURL -}}
+  <div class="th-attachment-preview"><object data="{{ $previewPDFURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
+      {{- else if and (ne $viewer "none") $absOK -}}
+        {{- $viewerURL := "" -}}{{- $provider := "" -}}
+        {{- if eq $viewer "google" -}}{{- $viewerURL = printf "https://docs.google.com/viewer?url=%s&embedded=true" ($abs | urlquery) -}}{{- $provider = "Google 문서 뷰어" -}}
+        {{- else -}}{{- $viewerURL = printf "https://view.officeapps.live.com/op/embed.aspx?src=%s" ($abs | urlquery) -}}{{- $provider = "Microsoft Office 뷰어" -}}{{- end -}}
+        {{ partial "embed-frame.html" (dict "Src" $viewerURL "Title" (print $title " 미리보기") "Provider" $provider "Link" $abs "Ratio" (.ratio | default "4 / 3") "Sandbox" "allow-scripts allow-same-origin" "Button" "미리보기 불러오기") }}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  <figcaption class="th-attachment-meta">
+    <i class="svg-icon ico-file" aria-hidden="true"></i>
+    <span class="th-attachment-title">{{ $title }}</span>
+    {{- with .desc }}<span class="th-attachment-desc">{{ . }}</span>{{ end -}}
+    {{- with .size }}<span class="th-attachment-size">{{ . }}</span>{{ end -}}
+    <span class="th-attachment-kind">{{ $kindLabel }}</span>
+    <a class="krds-btn small text th-attachment-download" href="{{ $srcURL }}"{{ if not (strings.HasPrefix $src "http") }} download{{ else }} target="_blank" rel="noopener"{{ end }}>내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
+  </figcaption>
+</figure>
+{{- end -}}
