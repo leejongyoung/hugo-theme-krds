@@ -75,7 +75,7 @@ attachments:
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/hugo-theme-krds/document-previews@v1.4.0
+- uses: leejongyoung/hugo-theme-krds/document-previews@v1.5.0
   with:
     source: static/assets/files
 - run: hugo --gc --minify
