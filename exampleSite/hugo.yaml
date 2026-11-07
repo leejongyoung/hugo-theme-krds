@@ -74,10 +74,14 @@ menus:
       pageRef: /docs/embeds
       parent: main-docs
       weight: 24
+    - name: 첨부 파일
+      pageRef: /docs/attachments
+      parent: main-docs
+      weight: 25
     - name: 태그와 검색
       pageRef: /docs/search-tags
       parent: main-docs
-      weight: 25
+      weight: 26
     - name: 블로그
       pageRef: /blog
       weight: 30
@@ -111,7 +115,11 @@ menus:
       pageRef: /docs/embeds
       parent: docs-usage
       weight: 23
+    - name: 첨부 파일
+      pageRef: /docs/attachments
+      parent: docs-usage
+      weight: 24
     - name: 태그와 검색
       pageRef: /docs/search-tags
       parent: docs-usage
-      weight: 24
+      weight: 25

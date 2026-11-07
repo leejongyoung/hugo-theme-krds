@@ -3,12 +3,19 @@
 {{- $hasMermaid := strings.Contains $raw "```mermaid" -}}
 {{- $hasChart := strings.Contains $raw "```chart" -}}
 {{- $hasEmbed := or (strings.Contains $raw "{{< youtube") (strings.Contains $raw "{{< vimeo") (strings.Contains $raw "{{< iframe") -}}
-{{- if isset .Params "math" }}{{ $hasMath = .Params.math }}{{ end -}}
-{{- if isset .Params "mermaid" }}{{ $hasMermaid = .Params.mermaid }}{{ end -}}
-{{- if isset .Params "chart" }}{{ $hasChart = .Params.chart }}{{ end -}}
-{{- if eq site.Params.krds.math false }}{{ $hasMath = false }}{{ end -}}
-{{- if eq site.Params.krds.mermaid false }}{{ $hasMermaid = false }}{{ end -}}
-{{- if eq site.Params.krds.chart false }}{{ $hasChart = false }}{{ end -}}
+{{- $sheetExts := slice ".xlsx" ".xls" ".ods" ".csv" ".tsv" -}}
+{{- $hasSheet := false -}}
+{{- range .Params.attachments -}}
+  {{- $asrc := .src | default "" | lower -}}
+  {{- $apv := true -}}
+  {{- if or (eq .preview false) (eq .preview "false") }}{{ $apv = false }}{{ end -}}
+  {{- if $apv -}}{{- range $sheetExts -}}{{- if strings.HasSuffix $asrc . -}}{{ $hasSheet = true }}{{ end -}}{{- end -}}{{- end -}}
+{{- end -}}
+{{- if and (not $hasSheet) (strings.Contains $raw "{{< attachment") -}}
+  {{- range $sheetExts -}}{{- if strings.Contains (lower $raw) . -}}{{ $hasSheet = true }}{{ end -}}{{- end -}}
+{{- end -}}
+{{- if isset .Params "sheet" }}{{ $hasSheet = .Params.sheet }}{{ end -}}
+{{- if eq site.Params.krds.sheet false }}{{ $hasSheet = false }}{{ end -}}
 <!doctype html>
 <html lang="{{ site.Language.Locale | default "ko" }}">
 <head>
@@ -24,7 +31,8 @@
   {{ partial "footer.html" . }}
   {{ if $hasMath }}<script src="{{ "assets/vendor/katex/katex.min.js" | relURL }}" defer></script><script src="{{ "assets/vendor/katex/contrib/auto-render.min.js" | relURL }}" defer></script><script src="{{ "assets/js/math.js" | relURL }}" defer></script>{{ end }}
   {{ if $hasChart }}<script src="{{ "assets/vendor/chartjs/chart.umd.js" | relURL }}" defer></script>{{ end }}
-  {{ if or $hasMermaid $hasChart $hasEmbed }}<script src="{{ "assets/js/embeds.js" | relURL }}" defer{{ if $hasMermaid }} data-mermaid="{{ "assets/vendor/mermaid/mermaid.esm.min.mjs" | relURL }}"{{ end }}></script>{{ end }}
+  {{ if $hasSheet }}<script src="{{ "assets/vendor/xlsx/xlsx.full.min.js" | relURL }}" defer></script>{{ end }}
+  {{ if or $hasMermaid $hasChart $hasEmbed $hasSheet }}<script src="{{ "assets/js/embeds.js" | relURL }}" defer{{ if $hasMermaid }} data-mermaid="{{ "assets/vendor/mermaid/mermaid.esm.min.mjs" | relURL }}"{{ end }}></script>{{ end }}
   {{ if eq .Section "search" }}<script src="{{ "assets/js/search.js" | relURL }}" defer></script>{{ end }}
   <script src="{{ "assets/js/theme.js" | relURL }}" defer></script>
   <script src="{{ "assets/js/vendor/krds-ui-script.js" | relURL }}" defer></script>

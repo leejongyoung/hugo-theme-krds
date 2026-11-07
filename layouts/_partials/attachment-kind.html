@@ -1,4 +1,4 @@
-{{- /* 첨부 파일 종류 판별: src(쿼리 제거) 확장자로 pdf|image|office|file 중 하나를 돌려준다. */ -}}
+{{- /* 첨부 파일 종류 판별: src(쿼리 제거) 확장자로 pdf|image|sheet|doc|file 중 하나를 돌려준다. */ -}}
 {{- $src := .src | default . -}}
 {{- $clean := index (split $src "?") 0 -}}
 {{- $clean = index (split $clean "#") 0 -}}
@@ -6,6 +6,7 @@
 {{- $kind := "file" -}}
 {{- if eq $ext "pdf" -}}{{- $kind = "pdf" -}}
 {{- else if in (slice "png" "jpg" "jpeg" "gif" "webp" "svg" "bmp") $ext -}}{{- $kind = "image" -}}
-{{- else if in (slice "doc" "docx" "odt" "xls" "xlsx" "cell" "ods" "ppt" "pptx" "odp" "hwp" "hwpx") $ext -}}{{- $kind = "office" -}}
+{{- else if in (slice "xls" "xlsx" "ods" "csv" "tsv") $ext -}}{{- $kind = "sheet" -}}
+{{- else if in (slice "doc" "docx" "odt" "ppt" "pptx" "odp" "hwp" "hwpx" "cell") $ext -}}{{- $kind = "doc" -}}
 {{- end -}}
 {{- $kind -}}
