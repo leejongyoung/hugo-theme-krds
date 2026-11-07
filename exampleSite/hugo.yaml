@@ -40,6 +40,11 @@ params:
     contact:
       - label: 저장소
         value: github.com/leejongyoung/hugo-theme-krds
+  krds:
+    wiki:
+      repo: leejongyoung/hugo-theme-krds
+      branch: main
+      contentDir: exampleSite/content
 
 menus:
   utility:
@@ -82,12 +87,19 @@ menus:
       pageRef: /docs/search-tags
       parent: main-docs
       weight: 26
+    - name: 아이콘
+      pageRef: /docs/icons
+      parent: main-docs
+      weight: 27
     - name: 블로그
       pageRef: /blog
       weight: 30
     - name: 태그
       pageRef: /tags
       weight: 40
+    - name: 위키
+      pageRef: /wiki
+      weight: 50
   docs:
     - name: 시작하기
       identifier: docs-start
@@ -123,3 +135,7 @@ menus:
       pageRef: /docs/search-tags
       parent: docs-usage
       weight: 25
+    - name: 아이콘
+      pageRef: /docs/icons
+      parent: docs-usage
+      weight: 26

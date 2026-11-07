@@ -1,0 +1,11 @@
+{{- /*
+  Font Awesome 아이콘. 사용: {{< icon "file-pdf" >}}  {{< icon name="github" style="brands" >}}  {{< icon name="circle-info" label="안내" >}}
+  매개변수: name(필수, 첫 번째 위치 인자도 가능), style(solid 기본 | regular | brands), label(있으면 스크린리더용 이름, 없으면 장식으로 숨김)
+  테마에 들어 있는 아이콘 목록은 문서의 "아이콘" 페이지에 있다.
+*/ -}}
+{{- $name := .Get "name" | default (.Get 0) -}}
+{{- $style := .Get "style" | default "solid" -}}
+{{- $label := .Get "label" -}}
+{{- $class := printf "th-fa-%s" $name -}}
+{{- if ne $style "solid" }}{{ $class = printf "th-fa-%s-%s" $style $name }}{{ end -}}
+<i class="th-fa {{ $class }}"{{ if $label }} role="img" aria-label="{{ $label }}"{{ else }} aria-hidden="true"{{ end }}></i>

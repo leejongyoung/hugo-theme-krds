@@ -1,0 +1,54 @@
+{{ define "main" }}
+{{- $index := partialCached "wiki-index.html" "wiki" -}}
+{{- $cfg := partial "wiki-config.html" . -}}
+{{- $pages := where site.RegularPages "Section" "wiki" -}}
+{{- $cats := slice -}}
+{{- range $pages }}{{ $cats = $cats | append (.Params.category | default "미분류") }}{{ end -}}
+<div class="th-wrap th-wiki" data-wiki="home" data-index="{{ $index }}"{{ with $cfg.newBase }} data-new-base="{{ . }}" data-new-template="---\ntitle: &quot;{title}&quot;\ncategory: &quot;분류&quot;\nsummary: \nlastmod: {date}\n---\n\n"{{ end }}>
+  {{ partial "breadcrumb.html" . }}
+  <h1 class="th-page-title">{{ .Title | default "위키" }}</h1>
+  {{ with .Description }}<p class="th-page-lead">{{ . }}</p>{{ end }}
+  {{ with .Content }}<div class="th-wiki-content" data-wiki-content><div class="th-prose">{{ . }}</div></div>{{ end }}
+  <div class="th-wiki-toolbar" role="search">
+    <div class="th-wiki-field">
+      <label for="th-wiki-q">위키 검색</label>
+      <div class="th-wiki-search"><i class="th-fa th-fa-magnifying-glass" aria-hidden="true"></i><input type="search" id="th-wiki-q" class="krds-input" data-wiki-q autocomplete="off" placeholder="제목·별칭·요약으로 찾기 (/ 키로 이동)"></div>
+    </div>
+    <div class="th-wiki-field">
+      <label for="th-wiki-sort">정렬</label>
+      <select id="th-wiki-sort" class="th-wiki-select" data-wiki-sort><option value="name">가나다순</option><option value="recent">최근 수정순</option></select>
+    </div>
+    <div class="th-wiki-field"><button type="button" class="krds-btn large secondary" data-wiki-random><i class="th-fa th-fa-shuffle" aria-hidden="true"></i> 무작위 문서</button></div>
+  </div>
+  <ul class="th-wiki-chips" aria-label="분류">
+    <li><button type="button" class="th-wiki-chip" data-wiki-chip="" aria-pressed="true">전체 <span class="th-wiki-chip-count">{{ len $pages }}</span></button></li>
+    {{- range ($cats | uniq | sort) }}{{ $cat := . }}{{ $n := 0 }}{{ range $pages }}{{ if eq (.Params.category | default "미분류") $cat }}{{ $n = add $n 1 }}{{ end }}{{ end }}
+    <li><button type="button" class="th-wiki-chip" data-wiki-chip="{{ $cat }}" aria-pressed="false"><i class="th-fa th-fa-folder" aria-hidden="true"></i>{{ $cat }} <span class="th-wiki-chip-count">{{ $n }}</span></button></li>
+    {{- end }}
+  </ul>
+  <p class="th-wiki-status" data-wiki-status role="status" aria-live="polite">문서 {{ len $pages }}개</p>
+  <ul class="th-wiki-list" data-wiki-list>
+    {{- range $pages.ByTitle }}{{ $cat := .Params.category | default "미분류" }}{{ $summary := .Params.summary | default .Description | default "" }}
+    <li class="th-wiki-card" data-wiki-item data-title="{{ .Title }}" data-aliases="{{ delimit (.Params.wiki_aliases | default (slice)) " " }}" data-category="{{ $cat }}" data-tags="{{ delimit (.Params.tags | default (slice)) " " }}" data-updated="{{ if not .Lastmod.IsZero }}{{ .Lastmod.Format "2006-01-02" }}{{ end }}" data-summary="{{ $summary }}">
+      <h2 class="th-wiki-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      {{ with $summary }}<p class="th-wiki-card-summary">{{ . }}</p>{{ end }}
+      <p class="th-wiki-card-meta"><span class="th-wiki-badge"><i class="th-fa th-fa-folder" aria-hidden="true"></i>{{ $cat }}</span>{{ if not .Lastmod.IsZero }}<span><i class="th-fa th-fa-clock" aria-hidden="true"></i> {{ .Lastmod.Format "2006.01.02" }}</span>{{ end }}</p>
+    </li>
+    {{- end }}
+  </ul>
+  <p class="th-wiki-empty" data-wiki-empty hidden>조건에 맞는 문서가 없습니다.</p>
+  <div class="th-wiki-panels">
+    <section class="th-wiki-panel">
+      <h2><i class="th-fa th-fa-clock-rotate-left" aria-hidden="true"></i>최근 바뀐 문서</h2>
+      <ul class="th-wiki-link-list">
+        {{- range first 5 $pages.ByLastmod.Reverse }}
+        <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span class="th-wiki-link-summary">{{ if not .Lastmod.IsZero }}{{ .Lastmod.Format "2006.01.02" }} · {{ end }}{{ .Params.category | default "미분류" }}</span></li>
+        {{- end }}
+      </ul>
+    </section>
+    <section class="th-wiki-panel" data-wiki-wanted hidden></section>
+    <section class="th-wiki-panel" data-wiki-orphans hidden></section>
+  </div>
+  <noscript><p class="th-embed-note">검색·분류 필터와 문서 링크 해석에는 JavaScript가 필요합니다. 문서 목록은 그대로 볼 수 있습니다.</p></noscript>
+</div>
+{{ end }}

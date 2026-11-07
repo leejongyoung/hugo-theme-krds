@@ -1,0 +1,43 @@
+{{ define "main" }}
+{{- $index := partialCached "wiki-index.html" "wiki" -}}
+{{- $cfg := partial "wiki-config.html" . -}}
+{{- $cat := .Params.category | default "미분류" -}}
+{{- $upd := .Lastmod -}}
+{{- $path := replace .File.Path "\\" "/" -}}
+<div class="th-wrap">
+  {{ partial "breadcrumb.html" . }}
+  <div class="th-doc th-wiki" data-wiki="article" data-index="{{ $index }}" data-page-url="{{ .RelPermalink }}"{{ with $cfg.newBase }} data-new-base="{{ . }}" data-new-template="---\ntitle: &quot;{title}&quot;\ncategory: &quot;{{ $cat }}&quot;\nsummary: \nlastmod: {date}\n---\n\n"{{ end }}>
+    <div class="th-doc-side">{{ partial "wiki-nav.html" . }}</div>
+    <article class="th-wiki-article">
+      <h1 class="th-page-title">{{ .Title }}</h1>
+      <div class="th-wiki-meta">
+        {{ with site.GetPage "/wiki" }}<a class="th-wiki-badge" href="{{ .RelPermalink }}?category={{ $cat | urlquery }}"><i class="th-fa th-fa-folder" aria-hidden="true"></i>{{ $cat }}</a>{{ end }}
+        {{ if not $upd.IsZero }}<span class="th-wiki-badge"><i class="th-fa th-fa-clock" aria-hidden="true"></i><time datetime="{{ $upd.Format "2006-01-02" }}">{{ $upd.Format "2006.01.02" }} 수정</time></span>{{ end }}
+        {{ range .Params.tags }}{{ with site.GetPage (printf "/tags/%s" (. | urlize)) }}<a class="th-wiki-badge" href="{{ .RelPermalink }}"><i class="th-fa th-fa-tag" aria-hidden="true"></i>{{ .LinkTitle }}</a>{{ end }}{{ end }}
+      </div>
+      {{ with .Description }}<p class="th-page-lead">{{ . }}</p>{{ end }}
+      <div class="th-wiki-content" data-wiki-content>
+        {{ with .Params.infobox }}<aside class="th-wiki-infobox" aria-label="문서 정보">
+          <h2 class="th-wiki-infobox-title"><i class="th-fa th-fa-circle-info" aria-hidden="true"></i>{{ $.Params.infobox_title | default $.Title }}</h2>
+          {{ with $.Params.infobox_image }}<img src="{{ . | relURL }}" alt="{{ $.Params.infobox_alt | default "" }}">{{ end }}
+          <dl>{{ range . }}<dt>{{ .label }}</dt><dd>{{ .value }}</dd>{{ end }}</dl>
+        </aside>{{ end }}
+        <div class="th-prose">{{ .Content }}</div>
+      </div>
+      {{ partial "attachments.html" . }}
+      <footer class="th-wiki-footer">
+        <section class="th-wiki-section" data-wiki-backlinks hidden></section>
+        <section class="th-wiki-section" data-wiki-related hidden></section>
+        <div class="th-wiki-actions" role="group" aria-label="문서 도구">
+          {{ with $cfg.base }}<a class="krds-btn small text" href="{{ printf "%s/edit/%s/%s/%s" . $cfg.branch $cfg.dir $path }}" target="_blank" rel="noopener"><i class="th-fa th-fa-pen-to-square" aria-hidden="true"></i>문서 편집<span class="th-sr-only"> (새 창 열림)</span></a>
+          <a class="krds-btn small text" href="{{ printf "%s/commits/%s/%s/%s" . $cfg.branch $cfg.dir $path }}" target="_blank" rel="noopener"><i class="th-fa th-fa-clock-rotate-left" aria-hidden="true"></i>변경 이력<span class="th-sr-only"> (새 창 열림)</span></a>{{ end }}
+          <button type="button" class="krds-btn small text" data-wiki-copy><i class="th-fa th-fa-link" aria-hidden="true"></i>주소 복사</button>
+          <button type="button" class="krds-btn small text" data-wiki-print><i class="th-fa th-fa-print" aria-hidden="true"></i>인쇄</button>
+          <span class="th-wiki-copy-status" data-wiki-copy-status role="status"></span>
+        </div>
+      </footer>
+    </article>
+    <div class="th-doc-toc">{{ partial "toc.html" . }}</div>
+  </div>
+</div>
+{{ end }}
