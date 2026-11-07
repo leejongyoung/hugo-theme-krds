@@ -1,10 +1,11 @@
 {{- /*
-  첨부 파일 하나를 파일 정보 + 미리보기 버튼으로 그린다. 미리보기는 버튼을 눌러야 본문에 펼쳐진다.
+  첨부 파일 하나를 미리보기 + 파일 정보(제목·설명·용량·해시·내려받기·미리보기)로 그린다.
   입력(dict): src(필수), title(없으면 파일 이름), desc, size, sha256(전체 해시, 앞 16자만 표시),
     preview(기본 true, "false"면 카드만), preview_pdf(문서 파일의 PDF 변환본),
     Page(호출 쪽 .Page).
-  펼치기 대상: pdf·이미지는 내부 렌더, 스프레드시트(xls·xlsx·ods·csv·tsv)는 SheetJS 표(외부 연결 없음),
+  미리보기: pdf·이미지는 내부 렌더, 스프레드시트(xls·xlsx·ods·csv·tsv)는 SheetJS 표(외부 연결 없음),
     문서(doc·docx·hwp·hwpx·ppt 등)는 preview_pdf가 있을 때만 PDF 미리보기. 그 외는 내려받기 카드만.
+  미리보기 버튼은 새 창에서 미리보기용 주소를 연다.
 */ -}}
 {{- $src := .src | default "" -}}
 {{- if eq $src "" -}}
@@ -14,6 +15,10 @@
 {{- $srcURL := $src -}}
 {{- if not (strings.HasPrefix $src "http") }}{{ $srcURL = strings.TrimPrefix "/" $src | relURL }}{{ end -}}
 {{- $kind := partial "attachment-kind.html" (dict "src" $src) | strings.TrimSpace -}}
+{{- $clean := index (split (index (split $src "?") 0) "#") 0 -}}
+{{- $ext := strings.TrimPrefix "." (path.Ext $clean) | lower -}}
+{{- $iconKind := "" -}}
+{{- if eq $ext "pdf" }}{{ $iconKind = "pdf" }}{{ else if in (slice "hwp" "hwpx") $ext }}{{ $iconKind = "hwp" }}{{ else if in (slice "htm" "html") $ext }}{{ $iconKind = "html" }}{{ end -}}
 {{- $kindLabel := "파일" -}}
 {{- if eq $kind "pdf" }}{{ $kindLabel = "PDF" }}{{ else if eq $kind "image" }}{{ $kindLabel = "이미지" }}{{ else if eq $kind "sheet" }}{{ $kindLabel = "스프레드시트" }}{{ else if eq $kind "doc" }}{{ $kindLabel = "문서" }}{{ end -}}
 {{- $wantPreview := true -}}
@@ -31,17 +36,32 @@
 {{- end -}}
 {{- $viewSrc := $srcURL -}}
 {{- if and (eq $viewKind "doc") (ne $previewPDFURL "") -}}{{- $viewSrc = $previewPDFURL -}}{{- end -}}
-<figure class="th-embed th-attachment th-attachment-{{ $kind }}"{{ if $viewKind }} data-th-attachment data-view-kind="{{ $viewKind }}" data-view-src="{{ $viewSrc }}" data-view-title="{{ $title }}" data-download-src="{{ $srcURL }}"{{ if eq $viewKind "sheet" }} data-th-sheet{{ end }}{{ end }}>
+{{- $viewerKind := $viewKind -}}
+{{- if eq $viewerKind "doc" }}{{ $viewerKind = "pdf" }}{{ end -}}
+{{- $viewerURL := "" -}}
+{{- if $viewKind -}}
+  {{- $viewerBase := "assets/attachment-viewer.html" | relURL -}}
+  {{- $viewerURL = printf "%s?src=%s&kind=%s&title=%s" $viewerBase (urlquery $viewSrc) (urlquery $viewerKind) (urlquery $title) -}}
+{{- end -}}
+<figure class="th-embed th-attachment th-attachment-{{ $kind }}"{{ if and $wantPreview (eq $kind "sheet") }} data-th-sheet data-sheet-src="{{ $srcURL }}"{{ end }}>
   {{- if $viewKind -}}
-  <div class="th-attachment-preview"><p class="th-embed-note">미리보기 버튼을 누르면 여기에 표시됩니다.</p></div>
+    {{- if eq $viewKind "pdf" -}}
+  <div class="th-attachment-preview"><object data="{{ $srcURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
+    {{- else if eq $viewKind "image" -}}
+  <div class="th-attachment-preview"><img src="{{ $srcURL }}" alt="{{ $title }}" loading="lazy"></div>
+    {{- else if eq $viewKind "sheet" -}}
+  <div class="th-attachment-preview"><div class="th-table-wrap"><p class="th-embed-note">표 불러오는 중…</p></div></div>
+    {{- else if and (eq $viewKind "doc") $previewPDFURL -}}
+  <div class="th-attachment-preview"><object data="{{ $previewPDFURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
+    {{- end -}}
   {{- end -}}
   <figcaption class="th-attachment-meta">
-    <i class="svg-icon ico-file" aria-hidden="true"></i>
+    {{- if $iconKind }}<span class="th-attachment-file-icon th-attachment-file-icon--{{ $iconKind }}" aria-hidden="true"></span>{{ else if $ext }}<span class="th-attachment-file-icon th-attachment-file-icon--extension" aria-hidden="true">{{ upper $ext }}</span>{{ else }}<i class="svg-icon ico-file" aria-hidden="true"></i>{{ end -}}
     <span class="th-attachment-title">{{ $title }}</span>
     {{- with .desc }}<span class="th-attachment-desc">{{ . }}</span>{{ end -}}
     {{- with .size }}<span class="th-attachment-size">{{ . }}</span>{{ end -}}
     <span class="th-attachment-kind">{{ $kindLabel }}</span>
-    {{- if $viewKind }}<button type="button" class="krds-btn small text th-attachment-preview-link" aria-expanded="false">미리보기 <i class="svg-icon ico-go" aria-hidden="true"></i></button>{{ end -}}
+    {{- if $viewKind }}<a class="krds-btn small text th-attachment-preview-link" href="{{ $viewerURL }}" target="_blank" rel="noopener">미리보기 <i class="svg-icon ico-go" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{{ end -}}
     <a class="krds-btn small text th-attachment-download" href="{{ $srcURL }}"{{ if not (strings.HasPrefix $src "http") }} download{{ else }} target="_blank" rel="noopener"{{ end }}>내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
     {{- with .sha256 }}<span class="th-attachment-sha" title="SHA-256 {{ . }}">SHA-256 {{ substr . 0 16 }}…</span>{{ end -}}
   </figcaption>

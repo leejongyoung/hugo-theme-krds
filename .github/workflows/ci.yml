@@ -13,6 +13,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+      - name: Generate document preview PDFs
+        uses: ./document-previews
+        with:
+          source: exampleSite/static/assets/files
       - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
