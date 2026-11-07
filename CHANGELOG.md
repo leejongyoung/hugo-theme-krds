@@ -1,5 +1,10 @@
 # 변경 이력
 
+## [1.2.0] - 2026-11-07
+
+### 추가
+- 첨부 파일 미리보기와 글 하단 파일 목록 (`attachment` shortcode + `attachments:` front matter). pdf·이미지는 브라우저 내장 렌더, 오피스 문서(hwp·hwpx·docx·xlsx·cell 등)는 PDF 변환본(`preview_pdf`) 또는 클릭 후 연결되는 외부 뷰어(`viewer="google"|"office"`), 그 외 내려받기 카드
+
 ## [1.1.2] - 2026-11-07
 
 ### 수정
