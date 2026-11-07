@@ -1,11 +1,11 @@
 {{- /*
-  첨부 파일 하나를 미리보기 + 파일 정보(제목·설명·용량·내려받기)로 그린다.
-  입력(dict): src(필수), title(없으면 파일 이름), desc, size,
+  첨부 파일 하나를 미리보기 + 파일 정보(제목·설명·용량·해시·내려받기·미리보기)로 그린다.
+  입력(dict): src(필수), title(없으면 파일 이름), desc, size, sha256(전체 해시, 앞 16자만 표시),
     preview(기본 true, "false"면 카드만), preview_pdf(오피스 문서의 PDF 변환본),
     viewer("none" 기본 | "google" | "office"), Page(호출 쪽 .Page).
   미리보기: pdf·이미지는 내부 렌더(외부 연결 없음). 오피스(hwp·hwpx·docx·xlsx·cell 등)는
   preview_pdf가 있으면 그 PDF를, viewer를 지정하면 외부 뷰어를 클릭 후 불러오기로,
-  둘 다 없으면 내려받기 카드만 보여준다.
+  둘 다 없으면 내려받기 카드만 보여준다. 미리보기 버튼은 새 창에서 미리보기용 주소를 연다.
 */ -}}
 {{- $src := .src | default "" -}}
 {{- if eq $src "" -}}
@@ -30,6 +30,14 @@
 {{- $abs := $src -}}
 {{- if not (strings.HasPrefix $src "http") }}{{ $abs = strings.TrimPrefix "/" $src | absURL }}{{ end -}}
 {{- $absOK := strings.HasPrefix $abs "https://" -}}
+{{- $viewerURL := "" -}}{{- $provider := "" -}}
+{{- if and (eq $kind "office") (eq $previewPDFURL "") (ne $viewer "none") $absOK -}}
+  {{- if eq $viewer "google" -}}{{- $viewerURL = printf "https://docs.google.com/viewer?url=%s&embedded=true" ($abs | urlquery) -}}{{- $provider = "Google 문서 뷰어" -}}
+  {{- else -}}{{- $viewerURL = printf "https://view.officeapps.live.com/op/embed.aspx?src=%s" ($abs | urlquery) -}}{{- $provider = "Microsoft Office 뷰어" -}}{{- end -}}
+{{- end -}}
+{{- $previewURL := $srcURL -}}
+{{- if and (eq $kind "office") (ne $previewPDFURL "") -}}{{- $previewURL = $previewPDFURL -}}
+{{- else if ne $viewerURL "" -}}{{- $previewURL = $viewerURL -}}{{- end -}}
 <figure class="th-embed th-attachment th-attachment-{{ $kind }}">
   {{- if $wantPreview -}}
     {{- if eq $kind "pdf" -}}
@@ -39,10 +47,7 @@
     {{- else if eq $kind "office" -}}
       {{- if $previewPDFURL -}}
   <div class="th-attachment-preview"><object data="{{ $previewPDFURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
-      {{- else if and (ne $viewer "none") $absOK -}}
-        {{- $viewerURL := "" -}}{{- $provider := "" -}}
-        {{- if eq $viewer "google" -}}{{- $viewerURL = printf "https://docs.google.com/viewer?url=%s&embedded=true" ($abs | urlquery) -}}{{- $provider = "Google 문서 뷰어" -}}
-        {{- else -}}{{- $viewerURL = printf "https://view.officeapps.live.com/op/embed.aspx?src=%s" ($abs | urlquery) -}}{{- $provider = "Microsoft Office 뷰어" -}}{{- end -}}
+      {{- else if ne $viewerURL "" -}}
         {{ partial "embed-frame.html" (dict "Src" $viewerURL "Title" (print $title " 미리보기") "Provider" $provider "Link" $abs "Ratio" (.ratio | default "4 / 3") "Sandbox" "allow-scripts allow-same-origin" "Button" "미리보기 불러오기") }}
       {{- end -}}
     {{- end -}}
@@ -52,7 +57,9 @@
     <span class="th-attachment-title">{{ $title }}</span>
     {{- with .desc }}<span class="th-attachment-desc">{{ . }}</span>{{ end -}}
     {{- with .size }}<span class="th-attachment-size">{{ . }}</span>{{ end -}}
+    {{- with .sha256 }}<span class="th-attachment-sha" title="SHA-256 {{ . }}">SHA-256 {{ substr . 0 16 }}…</span>{{ end -}}
     <span class="th-attachment-kind">{{ $kindLabel }}</span>
+    <a class="krds-btn small text th-attachment-preview-link" href="{{ $previewURL }}" target="_blank" rel="noopener">미리보기 <i class="svg-icon ico-go" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>
     <a class="krds-btn small text th-attachment-download" href="{{ $srcURL }}"{{ if not (strings.HasPrefix $src "http") }} download{{ else }} target="_blank" rel="noopener"{{ end }}>내려받기 <i class="svg-icon ico-down" aria-hidden="true"></i></a>
   </figcaption>
 </figure>
