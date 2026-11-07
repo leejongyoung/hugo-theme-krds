@@ -91,6 +91,10 @@ menus:
       pageRef: /docs/icons
       parent: main-docs
       weight: 27
+    - name: 홈 화면 꾸미기
+      pageRef: /docs/home
+      parent: main-docs
+      weight: 28
     - name: 블로그
       pageRef: /blog
       weight: 30
@@ -139,3 +143,7 @@ menus:
       pageRef: /docs/icons
       parent: docs-usage
       weight: 26
+    - name: 홈 화면 꾸미기
+      pageRef: /docs/home
+      parent: docs-usage
+      weight: 27

@@ -1,0 +1,13 @@
+{{- /*
+  홈 카드 하나. 입력(dict): title(필수), text, url, icon(Font Awesome 이름), tag, meta, abs(true면 url이 이미 사이트 기준 주소 — 페이지의 .RelPermalink 등)
+  url이 http(s)로 시작하면 그대로 쓰고, 아니면 baseURL을 붙인다.
+*/ -}}
+{{- $url := .url | default "" -}}
+{{- if and $url (not .abs) (not (strings.HasPrefix $url "http")) }}{{ $url = strings.TrimPrefix "/" $url | relURL }}{{ end -}}
+<li class="th-showcase-card">
+  {{- with .icon }}<span class="th-showcase-icon" aria-hidden="true"><i class="th-fa th-fa-{{ . }}"></i></span>{{ end }}
+  {{- with .tag }}<span class="th-showcase-tag">{{ . }}</span>{{ end }}
+  <h3 class="th-showcase-title">{{ if $url }}<a href="{{ $url }}">{{ $.title }}</a>{{ else }}{{ $.title }}{{ end }}</h3>
+  {{- with .text }}<p class="th-showcase-text">{{ . }}</p>{{ end }}
+  {{- with .meta }}<p class="th-showcase-meta">{{ . }}</p>{{ end }}
+</li>
