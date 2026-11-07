@@ -28,7 +28,8 @@
 {{- end -}}
 {{- $viewKind := "" -}}
 {{- if or (eq $kind "pdf") (eq $kind "image") (eq $kind "sheet") -}}{{- $viewKind = $kind -}}
-{{- else if and (eq $kind "doc") (ne $previewPDFURL "") -}}{{- $viewKind = "doc" -}}{{- end -}}
+{{- else if and (eq $kind "doc") (ne $previewPDFURL "") -}}{{- $viewKind = "doc" -}}
+{{- else if and (eq $ext "hwpx") (eq $previewPDFURL "") -}}{{- $viewKind = "hwpx" -}}{{- end -}}
 {{- $viewSrc := $srcURL -}}
 {{- if and (eq $viewKind "doc") (ne $previewPDFURL "") -}}{{- $viewSrc = $previewPDFURL -}}{{- end -}}
 {{- $viewerKind := $viewKind -}}
@@ -38,7 +39,7 @@
   {{- $viewerBase := "assets/attachment-viewer.html" | relURL -}}
   {{- $viewerURL = printf "%s?src=%s&download=%s&kind=%s&ext=%s&title=%s" $viewerBase (urlquery $viewSrc) (urlquery $srcURL) (urlquery $viewerKind) (urlquery $ext) (urlquery $title) -}}
 {{- end -}}
-<figure class="th-embed th-attachment th-attachment-{{ $kind }}"{{ if and $wantPreview (eq $kind "sheet") }} data-th-sheet data-sheet-src="{{ $srcURL }}"{{ end }}>
+<figure class="th-embed th-attachment th-attachment-{{ $kind }}"{{ if and $wantPreview (eq $kind "sheet") }} data-th-sheet data-sheet-src="{{ $srcURL }}"{{ end }}{{ if and $wantPreview (eq $viewKind "hwpx") }} data-th-hwpx data-hwpx-src="{{ $srcURL }}"{{ end }}>
   {{- if and $wantPreview $viewKind -}}
     {{- if eq $viewKind "pdf" -}}
   <div class="th-attachment-preview"><object data="{{ $srcURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
@@ -48,6 +49,8 @@
   <div class="th-attachment-preview"><div class="th-table-wrap"><p class="th-embed-note">표 불러오는 중…</p></div></div>
     {{- else if and (eq $viewKind "doc") $previewPDFURL -}}
   <div class="th-attachment-preview"><object data="{{ $previewPDFURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
+    {{- else if eq $viewKind "hwpx" -}}
+  <div class="th-attachment-preview th-attachment-hwpx"><div class="th-hwpx-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
     {{- end -}}
   {{- end -}}
   <figcaption class="th-attachment-meta">

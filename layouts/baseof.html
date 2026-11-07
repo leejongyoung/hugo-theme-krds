@@ -14,6 +14,7 @@
 {{- if and (not $hasSheet) (strings.Contains $raw "{{< attachment") -}}
   {{- range $sheetExts -}}{{- if strings.Contains (lower $raw) . -}}{{ $hasSheet = true }}{{ end -}}{{- end -}}
 {{- end -}}
+{{- $hasHwpx := and (strings.Contains $raw "{{< attachment") (strings.Contains (lower $raw) ".hwpx") -}}
 {{- if isset .Params "sheet" }}{{ $hasSheet = .Params.sheet }}{{ end -}}
 {{- if eq site.Params.krds.sheet false }}{{ $hasSheet = false }}{{ end -}}
 <!doctype html>
@@ -32,7 +33,8 @@
   {{ if $hasMath }}<script src="{{ "assets/vendor/katex/katex.min.js" | relURL }}" defer></script><script src="{{ "assets/vendor/katex/contrib/auto-render.min.js" | relURL }}" defer></script><script src="{{ "assets/js/math.js" | relURL }}" defer></script>{{ end }}
   {{ if $hasChart }}<script src="{{ "assets/vendor/chartjs/chart.umd.js" | relURL }}" defer></script>{{ end }}
   {{ if $hasSheet }}<script src="{{ "assets/vendor/xlsx/xlsx.full.min.js" | relURL }}" defer></script>{{ end }}
-  {{ if or $hasMermaid $hasChart $hasEmbed $hasSheet }}<script src="{{ "assets/js/embeds.js" | relURL }}" defer{{ if $hasMermaid }} data-mermaid="{{ "assets/vendor/mermaid/mermaid.esm.min.mjs" | relURL }}"{{ end }}></script>{{ end }}
+  {{ if $hasHwpx }}<script src="{{ "assets/js/hwpx.js" | relURL }}" defer></script>{{ end }}
+  {{ if or $hasMermaid $hasChart $hasEmbed $hasSheet $hasHwpx }}<script src="{{ "assets/js/embeds.js" | relURL }}" defer{{ if $hasMermaid }} data-mermaid="{{ "assets/vendor/mermaid/mermaid.esm.min.mjs" | relURL }}"{{ end }}></script>{{ end }}
   {{ if eq .Section "search" }}<script src="{{ "assets/js/search.js" | relURL }}" defer></script>{{ end }}
   {{ if eq .Section "wiki" }}<script src="{{ "assets/js/wiki.js" | relURL }}" defer></script>{{ end }}
   {{ if .IsHome }}<script src="{{ "assets/js/home.js" | relURL }}" defer></script>{{ end }}
