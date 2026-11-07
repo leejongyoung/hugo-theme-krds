@@ -34,6 +34,7 @@
   {{ if $hasSheet }}<script src="{{ "assets/vendor/xlsx/xlsx.full.min.js" | relURL }}" defer></script>{{ end }}
   {{ if or $hasMermaid $hasChart $hasEmbed $hasSheet }}<script src="{{ "assets/js/embeds.js" | relURL }}" defer{{ if $hasMermaid }} data-mermaid="{{ "assets/vendor/mermaid/mermaid.esm.min.mjs" | relURL }}"{{ end }}></script>{{ end }}
   {{ if eq .Section "search" }}<script src="{{ "assets/js/search.js" | relURL }}" defer></script>{{ end }}
+  {{ if eq .Section "wiki" }}<script src="{{ "assets/js/wiki.js" | relURL }}" defer></script>{{ end }}
   <script src="{{ "assets/js/theme.js" | relURL }}" defer></script>
   <script src="{{ "assets/js/vendor/krds-ui-script.js" | relURL }}" defer></script>
 </body>

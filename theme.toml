@@ -5,7 +5,7 @@ description = "Hugo theme based on KRDS (Korea Design System, 범정부 UI/UX �
 homepage = "https://github.com/leejongyoung/hugo-theme-krds"
 demosite = "https://leejongyoung.github.io/hugo-theme-krds/"
 tags = ["accessible", "blog", "documentation", "government", "krds", "responsive", "search"]
-features = ["accessibility", "client-side search", "dark mode", "documentation", "tags"]
+features = ["accessibility", "client-side search", "dark mode", "documentation", "icons", "tags", "wiki"]
 min_version = "0.146.0"
 
 [author]

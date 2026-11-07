@@ -1,0 +1,26 @@
+{{- /*
+  위키 인덱스(wiki-index.json)를 만들고 주소를 돌려준다. 제목(t)·주소(u)·별칭(a)·분류(c)·태그(g)·요약(s)·수정일(d)·
+  본문 속 [[문서 링크]] 대상(l)을 담는다. 코드 블록과 인라인 코드 안의 [[ ]]는 링크로 세지 않는다.
+  호출: partialCached "wiki-index.html" "wiki"
+*/ -}}
+{{- $items := slice -}}
+{{- range where site.RegularPages "Section" "wiki" -}}
+  {{- $raw := .RawContent | default "" | replaceRE "(?s)```.*?```" "" | replaceRE "(?s)~~~.*?~~~" "" | replaceRE "`[^`\n]*`" "" -}}
+  {{- $links := slice -}}
+  {{- range findRESubmatch `\[\[([^\[\]\n|#\\]+)` $raw -}}
+    {{- $links = $links | append (strings.TrimSpace (index . 1)) -}}
+  {{- end -}}
+  {{- $day := "" -}}
+  {{- if not .Lastmod.IsZero }}{{ $day = .Lastmod.Format "2006-01-02" }}{{ end -}}
+  {{- $items = $items | append (dict
+    "t" .Title
+    "u" .RelPermalink
+    "a" (.Params.wiki_aliases | default (slice))
+    "c" (.Params.category | default "미분류")
+    "g" (.Params.tags | default (slice))
+    "s" (.Params.summary | default .Description | default "")
+    "d" $day
+    "l" ($links | uniq)) -}}
+{{- end -}}
+{{- $res := resources.FromString "wiki-index.json" (jsonify $items) -}}
+{{- return $res.RelPermalink -}}
