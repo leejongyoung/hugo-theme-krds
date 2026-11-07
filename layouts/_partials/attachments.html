@@ -4,7 +4,7 @@
   <h2 class="th-attachments-title">첨부 파일</h2>
   <ul class="th-attachments-list">
     {{- range . -}}
-    <li class="th-attachments-item">{{ partial "attachment-item.html" (dict "src" .src "title" .title "desc" (.desc | default .caption) "size" .size "sha256" .sha256 "preview" "false" "preview_pdf" .preview_pdf "viewer" .viewer "Page" $.Page) }}</li>
+    <li class="th-attachments-item">{{ partial "attachment-item.html" (dict "src" .src "title" .title "desc" (.desc | default .caption) "size" .size "sha256" .sha256 "preview" "false" "preview_pdf" .preview_pdf "Page" $.Page) }}</li>
     {{- end -}}
   </ul>
 </section>

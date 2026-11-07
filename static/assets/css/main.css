@@ -11149,7 +11149,7 @@ html[data-krds-mode] #krds-footer .f-logo {
   border: 1px solid var(--th-border);
   border-radius: var(--krds-radius-small2);
 }
-.th-attachment-meta .th-attachment-download {
+.th-attachment-meta .th-attachment-preview-link {
   margin-left: auto;
 }
 .th-attachments {
@@ -11181,6 +11181,7 @@ html[data-krds-mode] #krds-footer .f-logo {
 }
 
 .th-attachment-sha {
+  flex-basis: 100%;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   word-break: break-all;
 }
