@@ -11180,4 +11180,9 @@ html[data-krds-mode] #krds-footer .f-logo {
   margin-top: 0;
 }
 
+.th-attachment-sha {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  word-break: break-all;
+}
+
 /*# sourceMappingURL=main.css.map */
