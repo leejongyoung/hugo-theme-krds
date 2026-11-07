@@ -1,6 +1,6 @@
 # 변경 이력
 
-## [Unreleased]
+## [1.1.2] - 2026-11-07
 
 ### 수정
 - iframe shortcode의 `link`가 `https://`로 시작하지 않으면 provider 링크를 출력하지 않음 (`javascript:` 등 비정상 scheme 차단)

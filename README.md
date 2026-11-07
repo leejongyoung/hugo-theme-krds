@@ -23,7 +23,7 @@ KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블
 
 ```sh
 hugo mod init github.com/example/my-site
-hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.1.1
+hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.1.2
 ```
 
 ```yaml
@@ -33,7 +33,7 @@ module:
     - path: github.com/leejongyoung/hugo-theme-krds
 ```
 
-`@v1.1.1`처럼 태그를 붙여 버전을 고정할 수 있습니다. 이 저장소의 `exampleSite/go.mod`도 로컬 테마를 Module로 불러 빌드합니다.
+`@v1.1.2`처럼 태그를 붙여 버전을 고정할 수 있습니다. 이 저장소의 `exampleSite/go.mod`도 로컬 테마를 Module로 불러 빌드합니다.
 
 ### 방법 2. Git submodule
 
@@ -54,7 +54,7 @@ Hugo Module 방식을 권장합니다. 모듈은 버전 고정과 업데이트�
 2. 저장소 **Settings → Pages**에서 Source를 *GitHub Actions*로 지정합니다.
 3. 프로젝트 사이트라면 workflow의 `--baseURL`을 Pages가 제공한 주소로 전달합니다.
 
-이 저장소의 [데모](https://leejongyoung.github.io/hugo-theme-krds/)도 같은 방식으로 배포됩니다. Actions는 Node.js 24 계열 공식 action(`checkout@v7`, `setup-go@v6`, `configure-pages@v6`, `upload-pages-artifact@v5`, `deploy-pages@v5`)과 `ubuntu-24.04`를 사용합니다. Hugo Extended는 공식 Release archive를 직접 검증 가능한 버전으로 설치합니다.
+이 저장소의 [데모](https://leejongyoung.github.io/hugo-theme-krds/)도 같은 방식으로 배포됩니다. Actions는 Node.js 24 계열 공식 action(`checkout@v7`, `setup-go@v7`, `configure-pages@v6`, `upload-pages-artifact@v5`, `deploy-pages@v5`)과 `ubuntu-24.04`를 사용합니다. Hugo Extended는 공식 Release archive를 SHA-256으로 검증한 뒤 설치합니다.
 
 ## 시작하기
 
