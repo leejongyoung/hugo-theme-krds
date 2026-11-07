@@ -1,5 +1,23 @@
 {{ define "main" }}
 <div class="th-wrap">
+  {{- /* 슬라이드 배너(banner): eyebrow, title, text, url, link_text, icon(Font Awesome), tone(blue|green|purple|orange|dark) */ -}}
+  {{ with .Params.banner }}
+  <section class="th-banner th-carousel" aria-roledescription="carousel" aria-label="{{ $.Params.banner_label | default "주요 소식" }}" data-th-carousel data-interval="{{ $.Params.banner_interval | default 6000 }}">
+    <div class="th-carousel-viewport"><ul class="th-carousel-track">
+      {{- range $i, $slide := . }}
+      <li class="th-carousel-slide" role="group" aria-roledescription="slide" aria-label="{{ add $i 1 }} / {{ len $.Params.banner }}">
+        <div class="th-slide th-tone-{{ $slide.tone | default "blue" }}">
+          {{ with $slide.icon }}<span class="th-slide-icon" aria-hidden="true"><i class="th-fa th-fa-{{ . }}"></i></span>{{ end }}
+          {{ with $slide.eyebrow }}<p class="th-slide-eyebrow">{{ . }}</p>{{ end }}
+          <h2 class="th-slide-title">{{ $slide.title }}</h2>
+          {{ with $slide.text }}<p class="th-slide-text">{{ . }}</p>{{ end }}
+          {{ with $slide.url }}<a class="th-slide-link" href="{{ if strings.HasPrefix . "http" }}{{ . }}{{ else }}{{ strings.TrimPrefix "/" . | relURL }}{{ end }}">{{ $slide.link_text | default "자세히 보기" }}<i class="th-fa th-fa-arrow-right" aria-hidden="true"></i></a>{{ end }}
+        </div>
+      </li>
+      {{- end }}
+    </ul></div>
+  </section>
+  {{ end }}
   <section class="th-hero" aria-labelledby="hero-title">
     {{ with .Params.hero.eyebrow }}<p class="th-hero-eyebrow">{{ . }}</p>{{ end }}
     <h1 id="hero-title" class="th-hero-title">{{ .Params.hero.title | default .Title | default site.Title }}</h1>
@@ -9,11 +27,60 @@
   {{ with .Params.features }}
   <section class="th-section" aria-labelledby="features-title">
     <h2 id="features-title" class="th-section-title">{{ $.Params.features_title | default "주요 기능" }}</h2>
-    <ul class="th-cards">{{ range . }}<li class="th-card"><h3 class="th-card-title">{{ .title }}</h3><p class="th-card-text">{{ .text }}</p>{{ with .url }}<a class="krds-btn medium text th-card-link" href="{{ strings.TrimPrefix "/" . | relURL }}">자세히 보기 <i class="svg-icon ico-angle right"></i></a>{{ end }}</li>{{ end }}</ul>
+    <ul class="th-cards">{{ range . }}<li class="th-card">{{ with .icon }}<span class="th-showcase-icon" aria-hidden="true"><i class="th-fa th-fa-{{ . }}"></i></span>{{ end }}<h3 class="th-card-title">{{ .title }}</h3><p class="th-card-text">{{ .text }}</p>{{ with .url }}<a class="krds-btn medium text th-card-link" href="{{ strings.TrimPrefix "/" . | relURL }}">자세히 보기 <i class="svg-icon ico-angle right"></i></a>{{ end }}</li>{{ end }}</ul>
+  </section>
+  {{ end }}
+  {{- /* 탭(tabs): title + source(posts|wiki) + limit, 또는 title + items(title, text, url, icon, tag) */ -}}
+  {{ with .Params.tabs }}
+  <section class="th-section th-tabs" data-th-tabs aria-labelledby="tabs-title">
+    <h2 id="tabs-title" class="th-section-title">{{ $.Params.tabs_title | default "둘러보기" }}</h2>
+    {{- range . }}{{ $tab := . }}
+    <div class="th-tabpanel" data-tab-title="{{ $tab.title }}">
+      <h3 class="th-tabpanel-title">{{ $tab.title }}</h3>
+      <ul class="th-showcase">
+        {{- if eq $tab.source "posts" }}
+          {{- range first ($tab.limit | default 3) (where site.RegularPages "Section" "blog").ByDate.Reverse }}
+            {{ partial "home-card.html" (dict "title" .LinkTitle "text" (.Summary | plainify | truncate 80) "url" .RelPermalink "abs" true "tag" "글" "meta" (.Date.Format "2006.01.02")) }}
+          {{- end }}
+        {{- else if eq $tab.source "wiki" }}
+          {{- range first ($tab.limit | default 3) (where site.RegularPages "Section" "wiki").ByLastmod.Reverse }}
+            {{ partial "home-card.html" (dict "title" .LinkTitle "text" (.Params.summary | default .Description | default "") "url" .RelPermalink "abs" true "tag" (.Params.category | default "위키") "meta" (cond .Lastmod.IsZero "" (.Lastmod.Format "2006.01.02"))) }}
+          {{- end }}
+        {{- else }}
+          {{- range $tab.items }}{{ partial "home-card.html" . }}{{ end }}
+        {{- end }}
+      </ul>
+    </div>
+    {{- end }}
+  </section>
+  {{ end }}
+  {{- /* 카드뷰(cards): icon, title, text, url, tag */ -}}
+  {{ with .Params.cards }}
+  <section class="th-section" aria-labelledby="cards-title">
+    <h2 id="cards-title" class="th-section-title">{{ $.Params.cards_title | default "살펴보기" }}</h2>
+    <ul class="th-showcase">{{ range . }}{{ partial "home-card.html" . }}{{ end }}</ul>
+  </section>
+  {{ end }}
+  {{- /* 카드뉴스(cardnews): tag, title, text, url, icon, tone */ -}}
+  {{ with .Params.cardnews }}
+  <section class="th-section th-cardnews" data-th-cardnews aria-labelledby="news-title">
+    <div class="th-cardnews-head"><h2 id="news-title" class="th-section-title">{{ $.Params.cardnews_title | default "카드뉴스" }}</h2></div>
+    <ul class="th-cardnews-track">
+      {{- range $i, $news := . }}
+      <li class="th-cardnews-item"><article class="th-news th-tone-{{ $news.tone | default "blue" }}">
+        {{ with $news.icon }}<span class="th-news-icon" aria-hidden="true"><i class="th-fa th-fa-{{ . }}"></i></span>{{ end }}
+        <p class="th-news-no">{{ printf "%02d" (add $i 1) }} / {{ printf "%02d" (len $.Params.cardnews) }}{{ with $news.tag }} · {{ . }}{{ end }}</p>
+        <div class="th-news-body">
+          <h3 class="th-news-title">{{ with $news.url }}<a href="{{ if strings.HasPrefix . "http" }}{{ . }}{{ else }}{{ strings.TrimPrefix "/" . | relURL }}{{ end }}">{{ $news.title }}</a>{{ else }}{{ $news.title }}{{ end }}</h3>
+          {{ with $news.text }}<p class="th-news-text">{{ . }}</p>{{ end }}
+        </div>
+      </article></li>
+      {{- end }}
+    </ul>
   </section>
   {{ end }}
   {{ with .Content }}<section class="th-section"><div class="th-prose">{{ . }}</div></section>{{ end }}
   {{ $posts := where site.RegularPages "Section" "blog" }}
-  {{ if $posts }}<section class="th-section" aria-labelledby="recent-title"><h2 id="recent-title" class="th-section-title">최근 글</h2><ul class="th-post-list">{{ range first 3 $posts.ByDate.Reverse }}<li class="th-post-item"><h3 class="th-post-title"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>{{ partial "post-meta.html" . }}</li>{{ end }}</ul></section>{{ end }}
+  {{ if and $posts (ne .Params.recent_posts false) }}<section class="th-section" aria-labelledby="recent-title"><h2 id="recent-title" class="th-section-title">최근 글</h2><ul class="th-post-list">{{ range first 3 $posts.ByDate.Reverse }}<li class="th-post-item"><h3 class="th-post-title"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h3>{{ partial "post-meta.html" . }}</li>{{ end }}</ul></section>{{ end }}
 </div>
 {{ end }}
