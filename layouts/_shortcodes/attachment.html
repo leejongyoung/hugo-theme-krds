@@ -1,0 +1,10 @@
+{{- /*
+  첨부 파일 shortcode. 미리보기 + 파일 정보를 본문 원하는 자리에 넣는다.
+  사용: {{< attachment src="/assets/files/보고서.pdf" title="보고서" >}}
+  매개변수: src(필수), title(없으면 파일 이름), desc, size,
+    preview(기본 true, "false"면 카드만), preview_pdf(오피스 문서의 PDF 변환본),
+    viewer("none" 기본 | "google" | "office", 외부 뷰어·클릭 후 연결), ratio(미리보기 비율, 기본 "4 / 3").
+  page front matter `attachments:`에 같은 파일을 적으면 글 하단 목록에도 함께 보인다.
+*/ -}}
+{{- $p := dict "src" (.Get "src") "title" (.Get "title") "desc" (.Get "desc") "size" (.Get "size") "preview" (.Get "preview") "preview_pdf" (.Get "preview_pdf") "viewer" (.Get "viewer") "ratio" (.Get "ratio") "Page" .Page -}}
+{{- partial "attachment-item.html" $p -}}
