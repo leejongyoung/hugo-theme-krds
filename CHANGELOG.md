@@ -1,5 +1,10 @@
 # 변경 이력
 
+## [Unreleased]
+
+### 수정
+- 첨부 문서의 hwpx→PDF 변환 안내를 H2Orestart 전제조건 포함으로 정정 (순정 LibreOffice는 hwpx 변환 불가, 실측 확인)
+
 ## [1.2.2] - 2026-11-07
 
 ### 추가
