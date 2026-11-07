@@ -56,7 +56,7 @@ HWP/HWPX까지 로컬 도구 없이 변환하려면 사이트의 GitHub Actions 
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/hugo-theme-krds/document-previews@v1.2.6
+- uses: leejongyoung/hugo-theme-krds/document-previews@v1.3.0
   with:
     source: static/assets/files
 - run: hugo --gc --minify
