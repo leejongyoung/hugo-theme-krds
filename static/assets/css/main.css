@@ -1614,6 +1614,35 @@
   -webkit-mask-image: url(../img/component/icon/ico_file.svg);
   mask-image: url(../img/component/icon/ico_file.svg);
 }
+.th-attachment-file-icon {
+  display: inline-flex;
+  flex: 0 0 2rem;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 2px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.th-attachment-file-icon--pdf {
+  background-image: url(../img/component/icon/ico_file_pdf.svg);
+}
+.th-attachment-file-icon--hwp {
+  background-image: url(../img/component/icon/ico_file_hwp.svg);
+}
+.th-attachment-file-icon--html {
+  background-image: url(../img/component/icon/ico_file_html.svg);
+}
+.th-attachment-file-icon--extension {
+  border: 1px solid var(--th-border-strong);
+  background-color: var(--th-bg-subtle);
+  color: var(--th-text);
+  font-size: 0.625rem;
+  font-weight: var(--krds-font-weight-bold);
+  letter-spacing: -0.03em;
+}
 .svg-icon.ico-checkbox {
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: center center;
@@ -11149,7 +11178,8 @@ html[data-krds-mode] #krds-footer .f-logo {
   border: 1px solid var(--th-border);
   border-radius: var(--krds-radius-small2);
 }
-.th-attachment-meta .th-attachment-preview-link {
+.th-attachment-meta > .th-attachment-preview-link:first-of-type,
+.th-attachment-meta > .th-attachment-download:first-of-type {
   margin-left: auto;
 }
 .th-attachments {
