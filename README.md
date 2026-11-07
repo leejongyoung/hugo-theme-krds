@@ -23,7 +23,7 @@ KRDS의 디자인 토큰과 HTML 컴포넌트를 그대로 가져와 문서·블
 
 ```sh
 hugo mod init github.com/example/my-site
-hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.2.3
+hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.2.4
 ```
 
 ```yaml
@@ -33,7 +33,7 @@ module:
     - path: github.com/leejongyoung/hugo-theme-krds
 ```
 
-`@v1.2.3`처럼 태그를 붙여 버전을 고정할 수 있습니다. 이 저장소의 `exampleSite/go.mod`도 로컬 테마를 Module로 불러 빌드합니다.
+`@v1.2.4`처럼 태그를 붙여 버전을 고정할 수 있습니다. 이 저장소의 `exampleSite/go.mod`도 로컬 테마를 Module로 불러 빌드합니다.
 
 ### 방법 2. Git submodule
 
