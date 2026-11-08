@@ -59,7 +59,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/hugo-theme-krds/document-previews@v1.6.0
+- uses: leejongyoung/hugo-theme-krds/document-previews@v1.6.1
   with:
     source: static/assets/files
 - run: hugo --gc --minify
@@ -111,7 +111,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 ```yaml
 - uses: actions/checkout@v7
 - name: Scan attachment files for viruses (first time only)
-  uses: leejongyoung/hugo-theme-krds/attachment-scan@v1.6.0
+  uses: leejongyoung/hugo-theme-krds/attachment-scan@v1.6.1
   with:
     source: static/assets/files
     manifest: data/attachment_scan.json
