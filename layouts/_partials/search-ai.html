@@ -1,0 +1,9 @@
+{{- /* "AI에게 물어보기"(무료 웹 챗봇으로 넘기기)에 쓸 서비스 목록(쉼표로 이은 문자열). 꺼져 있으면 빈 문자열.
+  params.krds.search.ai: true 면 chatgpt,gemini,claude, 목록(예: [chatgpt, gemini, grok])이면 그 목록. 문장 검색(search.sentence)이 켜져 있어야 한다. */ -}}
+{{- $krds := site.Params.krds | default dict -}}
+{{- $cfg := index $krds "search" | default dict -}}
+{{- $ai := index $cfg "ai" -}}
+{{- $out := "" -}}
+{{- if eq $ai true }}{{ $out = "chatgpt,gemini,claude" }}{{ else if reflect.IsSlice $ai }}{{ $out = delimit $ai "," }}{{ end -}}
+{{- if not (partial "search-sentence.html") }}{{ $out = "" }}{{ end -}}
+{{- return $out -}}

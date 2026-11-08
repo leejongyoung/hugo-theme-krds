@@ -1,4 +1,0 @@
-{{- /* "AI로 답변 만들기"(방문자 API 키)를 쓸지. params.krds.search.answer: true 로 켠다(기본 꺼짐). 문장 검색(search.sentence)이 켜져 있어야 한다. */ -}}
-{{- $krds := site.Params.krds | default dict -}}
-{{- $cfg := index $krds "search" | default dict -}}
-{{- return (and (eq (index $cfg "answer") true) (partial "search-sentence.html")) -}}
