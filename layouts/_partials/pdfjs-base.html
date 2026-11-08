@@ -1,0 +1,10 @@
+{{- /* PDF 미리보기 엔진(pdf.js)은 테마의 assets/vendor/pdfjs/ 에 있다. assets 폴더의 파일은 템플릿이 주소를 쓸 때만 사이트에 발행되므로,
+  PDF 첨부를 그리는 페이지가 있을 때만 약 1.7MB가 사이트에 들어간다. 돌려주는 값은 발행된 폴더의 주소(assets/vendor/pdfjs/). */ -}}
+{{- range slice "pdf.mjs" "pdf.worker.mjs" "LICENSE" "VERSION" -}}
+  {{- $name := . -}}
+  {{- with resources.Get (printf "vendor/pdfjs/%s" $name) -}}
+    {{- $published := resources.Copy (printf "assets/vendor/pdfjs/%s" $name) . -}}
+    {{- $_ := $published.RelPermalink -}}
+  {{- end -}}
+{{- end -}}
+{{- return ("assets/vendor/pdfjs/" | relURL) -}}

@@ -24,7 +24,7 @@ tags: [아이콘, 가이드]
 
 ## 첨부 파일 아이콘
 
-[첨부 파일]({{< relref "/docs/attachments" >}}) 카드는 확장자에 맞는 아이콘과 색을 자동으로 고릅니다. HWP/HWPX는 Font Awesome 문서 아이콘의 모양을 바탕으로 "H"를 넣은 전용 아이콘(`file-hwp`)을 쓰고, 워드와 구분되도록 조금 진한 파란색으로 그립니다.
+[첨부 파일]({{< relref "/docs/attachments" >}}) 카드는 확장자에 맞는 아이콘과 색을 자동으로 고릅니다. HWP/HWPX는 일반 파일 아이콘으로 보입니다.
 
 | 종류 | 확장자 | 아이콘 |
 | :--- | :--- | :--- |
@@ -32,7 +32,7 @@ tags: [아이콘, 가이드]
 | 문서 | doc, docx, odt, rtf | {{< icon "file-word" >}} file-word |
 | 스프레드시트 | xls, xlsx, ods, cell, csv, tsv | {{< icon "file-excel" >}} file-excel · {{< icon "file-csv" >}} file-csv |
 | 프레젠테이션 | ppt, pptx, odp, show | {{< icon "file-powerpoint" >}} file-powerpoint |
-| 한글 | hwp, hwpx | {{< icon "file-hwp" >}} file-hwp |
+| 한글 | hwp, hwpx | 일반 파일 아이콘 |
 | 이미지·음원·영상 | png, jpg, svg, mp3, mp4 … | {{< icon "file-image" >}} {{< icon "file-audio" >}} {{< icon "file-video" >}} |
 | 압축·코드·텍스트 | zip, html, json, txt … | {{< icon "file-zipper" >}} {{< icon "file-code" >}} {{< icon "file-lines" >}} |
 

@@ -1632,7 +1632,6 @@
 .th-fa-file-powerpoint { --th-fa: url("../img/fa/solid/file-powerpoint.svg"); }
 .th-fa-file-image { --th-fa: url("../img/fa/solid/file-image.svg"); }
 .th-fa-file-lines { --th-fa: url("../img/fa/solid/file-lines.svg"); }
-.th-fa-file-hwp { --th-fa: url("../img/fa/solid/file-hwp.svg"); }
 .th-fa-file-csv { --th-fa: url("../img/fa/solid/file-csv.svg"); }
 .th-fa-file-zipper { --th-fa: url("../img/fa/solid/file-zipper.svg"); }
 .th-fa-file-code { --th-fa: url("../img/fa/solid/file-code.svg"); }
@@ -1746,7 +1745,6 @@
 .th-attachment-file-icon--doc { --th-file-icon-color: #246beb; }
 .th-attachment-file-icon--sheet { --th-file-icon-color: #17803d; }
 .th-attachment-file-icon--slides { --th-file-icon-color: #c4320a; }
-.th-attachment-file-icon--hwp { --th-file-icon-color: #0b5fa5; }
 .th-attachment-file-icon--image { --th-file-icon-color: #7a5af8; }
 .th-attachment-file-icon--audio { --th-file-icon-color: #0e9384; }
 .th-attachment-file-icon--video { --th-file-icon-color: #dd2590; }
@@ -12010,29 +12008,16 @@ html[data-krds-mode="high-contrast"] .th-text-chip--warn { border-color: var(--k
 .th-search-ask-note { margin: 0 0 var(--krds-gap-3); color: var(--th-text-subtle); font-size: var(--krds-pc-font-size-body-small); }
 .th-search-ask-list { margin: 0; padding: 0; list-style: none; }
 
-/* ── 한글 문서 미리보기(rhwp) ── */
-.th-hwp-info {
-  margin: 0;
-  padding: var(--krds-padding-2) var(--krds-padding-3);
-  border-bottom: 1px solid var(--th-border);
-  background: var(--th-bg-subtle);
-  color: var(--th-text-subtle);
-  font-size: var(--krds-pc-font-size-body-small);
-}
+/* ── 한글 문서 미리보기(rhwp): 카드도 새 탭 viewer와 같은 쪽 모양 ── */
 .th-hwp-wrap > .th-embed-note,
 .th-hwp-wrap > .th-embed-error { margin: 0; padding: var(--krds-padding-3); }
-.th-hwp-view {
-  max-height: 70vh;
-  padding: var(--krds-padding-3);
-  overflow: auto;
-  background: var(--th-bg-subtle);
-}
 .th-hwp-view[hidden] { display: none; }
 .th-hwp-pages {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--krds-gap-3);
+  padding: var(--krds-gap-3) 0;
 }
 .th-hwp-page {
   width: 100%;
@@ -12049,22 +12034,56 @@ html[data-krds-mode="high-contrast"] .th-text-chip--warn { border-color: var(--k
   color: #555;
 }
 .th-hwp-viewer { max-width: 100rem; margin: 0 auto; }
-.th-hwp-viewer > .th-hwp-info { margin: 0 0 var(--krds-gap-3); padding: 0; border: 0; background: none; }
 @media print {
-  .th-hwp-info, .th-hwp-viewer > .th-hwp-info { display: none; }
-  .th-hwp-view { max-height: none; padding: 0; overflow: visible; background: none; }
+  .th-hwp-pages { padding: 0; }
   .th-hwp-page { max-width: none; aspect-ratio: auto; box-shadow: none; break-after: page; }
 }
 
-/* ── AI에게 물어보기(선택) ── */
-.th-search-askai { margin: var(--krds-gap-6, 3rem) 0 0; padding: var(--krds-padding-3) var(--krds-padding-4); border: 1px solid var(--th-border); border-radius: var(--krds-radius-medium2); background: var(--th-bg-subtle); }
-.th-search-askai[hidden], .th-askai-fallback[hidden] { display: none; }
-.th-askai-title { margin: 0 0 var(--krds-gap-2); font-weight: var(--krds-font-weight-bold); }
-.th-askai-links { display: flex; flex-wrap: wrap; gap: var(--krds-gap-2); }
-.th-askai-link { text-decoration: none; }
-.th-askai-note, .th-askai-status { margin: var(--krds-gap-2) 0 0; color: var(--th-text-subtle); font-size: var(--krds-pc-font-size-body-small); }
-.th-askai-status:empty { display: none; }
-.th-askai-fallback { margin: var(--krds-gap-2) 0 0; }
-.th-askai-fallback textarea { width: 100%; margin-top: var(--krds-gap-2); }
+/* ── PDF 미리보기(pdf.js): 카드도 새 탭 viewer와 같은 쪽 모양 ── */
+.th-pdf-wrap > .th-embed-note,
+.th-pdf-wrap > .th-embed-error { margin: 0; padding: var(--krds-padding-3); }
+.th-pdf-view[hidden] { display: none; }
+.th-pdf-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--krds-gap-3);
+  padding: var(--krds-gap-3) 0;
+}
+.th-pdf-page {
+  width: 100%;
+  max-width: 82rem;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--th-border-strong), 0 0.2rem 0.8rem rgba(0, 0, 0, 0.12);
+}
+.th-pdf-page canvas { display: block; width: 100%; height: auto; }
+.th-pdf-page--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 10rem;
+  color: #555;
+}
+.th-pdf-viewer { max-width: 100rem; margin: 0 auto; }
+@media print {
+  .th-pdf-pages { padding: 0; }
+  .th-pdf-page { max-width: none; box-shadow: none; break-after: page; }
+}
+
+/* ── 자주 묻는 질문(FAQ) 아코디언: JS 없이 details/summary로 동작 ── */
+.th-faq { display: flex; flex-direction: column; gap: var(--krds-gap-3); }
+.th-faq-item { border: 1px solid var(--th-border); border-radius: var(--krds-radius-medium2); background: var(--th-bg); }
+.th-faq-q { display: flex; align-items: center; justify-content: space-between; gap: var(--krds-gap-3); margin: 0; padding: var(--krds-padding-3) var(--krds-padding-4); font-weight: var(--krds-font-weight-bold); cursor: pointer; list-style: none; }
+.th-faq-q::-webkit-details-marker { display: none; }
+.th-faq-q::marker { content: ""; }
+.th-faq-q::after { content: "+"; flex: none; color: var(--th-text-subtle); font-weight: var(--krds-font-weight-regular); }
+.th-faq-item[open] .th-faq-q::after { content: "−"; }
+.th-faq-a { padding: var(--krds-padding-3) var(--krds-padding-4); border-top: 1px solid var(--th-border); }
+.th-faq-a > :first-child { margin-top: 0; }
+.th-faq-a > :last-child { margin-bottom: 0; }
+.th-faq-ask { margin: var(--krds-gap-2) 0 0; }
+@media print {
+  .th-faq-item > .th-faq-a { display: block !important; }
+}
 
 /*# sourceMappingURL=main.css.map */
