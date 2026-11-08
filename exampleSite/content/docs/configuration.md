@@ -13,6 +13,7 @@ tags: [설정, 가이드]
 | `params.footer.description` | 푸터 설명 |
 | `params.footer.contact` | 푸터 연락처 목록(`label`, `value`) |
 | `params.customCSS` | 테마 CSS 뒤에 불러올 사이트 CSS 경로 목록 |
+| `params.krds.search.sentence` | 검색의 "문장으로 찾기"를 켤지(기본 `true`). 끄면 색인에서 소제목별 본문이 빠집니다 |
 | `pagination.pagerSize` | 글 목록 한 페이지의 글 수 |
 | `outputs.home` | 검색에 필요한 `JSON`을 포함한 홈 출력 형식 |
 

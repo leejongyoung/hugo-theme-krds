@@ -1,0 +1,6 @@
+{{- /* 문장(질문) 검색을 켤지. params.krds.search.sentence: false 로 끈다(기본 켜짐). */ -}}
+{{- $krds := site.Params.krds | default dict -}}
+{{- $cfg := index $krds "search" | default dict -}}
+{{- $on := true -}}
+{{- if eq (index $cfg "sentence") false }}{{ $on = false }}{{ end -}}
+{{- return $on -}}
