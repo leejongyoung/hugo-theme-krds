@@ -63,7 +63,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 
 ```yaml
 - uses: actions/checkout@v7
-- uses: leejongyoung/hugo-theme-krds/document-previews@v1.13.0
+- uses: leejongyoung/hugo-theme-krds/document-previews@v1.14.0
   with:
     source: static/assets/files
 - run: hugo --gc --minify
@@ -84,7 +84,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 - **사이트 용량:** rhwp(약 12MB)는 테마의 `assets/vendor/rhwp/`에 들어 있고, 한글 첨부(`hwp`·`hwpx`)가 있는 페이지를 만들 때만 사이트에 발행됩니다. 한글 첨부가 없는 사이트에는 들어가지 않습니다.
 - **보안:** rhwp가 문서 내용으로 만든 SVG를 그대로 넣지 않고, 허용한 SVG 요소·속성만 새로 만들어 옮깁니다(스크립트, 외부 주소, 이벤트 속성, `foreignObject` 제거). 30MB를 넘는 문서는 열지 않습니다.
 - **글꼴:** SVG는 글꼴 이름으로 글자를 그리므로 기기에 한컴 글꼴이 없으면 대체 글꼴로 보이고 줄바꿈 위치가 원본과 다를 수 있습니다.
-- **접근성:** 쪽은 그림으로 그리되 스크린 리더에는 그림 대신 쪽의 글(`getPageText`)을 화면에 보이지 않게 함께 둡니다. 표 구조·서식은 전달되지 않고 글만 읽힙니다. 이전 버전(v1.13.0 이전)의 `hwpx` 기본 미리보기와 달리 **하이퍼링크는 눌리지 않습니다.**
+- **접근성:** 쪽은 그림으로 그리되 스크린 리더에는 그림 대신 쪽의 글(`getPageText`)을 화면에 보이지 않게 함께 둡니다. 표 구조·서식은 전달되지 않고 글만 읽힙니다. 이전 버전(v1.14.0 이전)의 `hwpx` 기본 미리보기와 달리 **하이퍼링크는 눌리지 않습니다.**
 - **CSP:** `Content-Security-Policy`를 쓰는 사이트는 WASM 실행을 허용(`script-src 'wasm-unsafe-eval'`)해야 합니다.
 - **열리지 않는 문서:** 암호가 걸린 문서와 rhwp가 지원하지 않는 형식은 오류 안내와 내려받기가 나옵니다.
 - **확인한 범위:** HWP 5.x와 HWP 3.0 변환본을 포함한 실제 문서 20개를 Chromium·Firefox·WebKit(Playwright)에서 열어 오류가 없는 것을 확인했습니다. 한컴 오피스의 화면과 일일이 대조하지는 않았습니다. 예제 `sample.hwp`는 rhwp 프로젝트(MIT)의 테스트 문서입니다.
@@ -131,7 +131,7 @@ HWP/HWPX를 정확한 서식으로 보여 주거나 예전 형식 `hwp`를 미�
 ```yaml
 - uses: actions/checkout@v7
 - name: Scan attachment files for viruses (first time only)
-  uses: leejongyoung/hugo-theme-krds/attachment-scan@v1.13.0
+  uses: leejongyoung/hugo-theme-krds/attachment-scan@v1.14.0
   with:
     source: static/assets/files
     manifest: data/attachment_scan.json
@@ -152,7 +152,7 @@ jobs:
   deploy:
     steps:
       - uses: actions/checkout@v7
-      - uses: leejongyoung/hugo-theme-krds/attachment-scan@v1.13.0
+      - uses: leejongyoung/hugo-theme-krds/attachment-scan@v1.14.0
         with:
           source: static/assets/files
           manifest: data/attachment_scan.json

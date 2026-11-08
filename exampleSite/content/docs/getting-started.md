@@ -11,7 +11,7 @@ tags: [설치, 가이드]
 
 ```sh
 hugo mod init github.com/example/my-site
-hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.13.0
+hugo mod get github.com/leejongyoung/hugo-theme-krds@v1.14.0
 ```
 
 ```yaml
