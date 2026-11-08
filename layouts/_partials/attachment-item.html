@@ -73,7 +73,7 @@
   {{- end -}}
 
   <figcaption class="th-attachment-meta">
-    {{ partial "attachment-icon.html" $ext }}
+    {{ if not (and (not $wantPreview) (eq $viewKind "hwp")) }}{{ partial "attachment-icon.html" $ext }}{{ end }}
     <span class="th-attachment-title">{{ $title }}</span>
     {{- with .desc }}<span class="th-attachment-desc">{{ . }}</span>{{ end -}}
     {{- with .size }}<span class="th-attachment-size">{{ . }}</span>{{ end -}}
