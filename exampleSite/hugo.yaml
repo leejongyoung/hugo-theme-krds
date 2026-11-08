@@ -152,3 +152,7 @@ menus:
       pageRef: /docs/home
       parent: docs-usage
       weight: 27
+    - name: 자주 묻는 질문
+      pageRef: /docs/faq
+      parent: docs-usage
+      weight: 28
