@@ -42,9 +42,7 @@
 {{- /* 바이러스 검사 표시: data/attachment_scan.json(attachment-scan action이 만듦)에 이 파일이 clean으로 기록돼 있고 sha256이 맞으면 표시 */ -}}
 {{- $givenSha := .sha256 | default "" | lower -}}
 {{- $scan := dict -}}
-{{- /* Hugo 0.156부터 site.Data는 폐기되고 hugo.Data를 쓴다. 최소 지원 버전(0.146)에서도 돌도록 나눈다. */ -}}
-{{- $scanData := dict -}}
-{{- if ge hugo.Version "0.156.0" }}{{ $scanData = hugo.Data.attachment_scan | default dict }}{{ else }}{{ $scanData = site.Data.attachment_scan | default dict }}{{ end -}}
+{{- $scanData := hugo.Data.attachment_scan | default dict -}}
 {{- if and (not (strings.HasPrefix $src "http")) $scanData -}}
   {{- with $scanData.files -}}
     {{- with index . (printf "/%s" (strings.TrimPrefix "/" $clean)) -}}

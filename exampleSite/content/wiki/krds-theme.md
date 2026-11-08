@@ -14,7 +14,7 @@ infobox:
   - label: 라이선스
     value: MIT
   - label: 필요 환경
-    value: Hugo Extended 0.146.0 이상, Go 1.24 이상
+    value: Hugo Extended 0.158.0 이상, Go 1.24 이상
   - label: 디자인 원본
     value: KRDS 1.1.0(행정안전부, 2024)
 ---
