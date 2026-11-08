@@ -39,10 +39,18 @@ jobs:
           cache: false
       - name: Install Hugo Extended
         env:
-          HUGO_VERSION: 0.169.0
+          HUGO_ASSET_ID: "682125110"
           HUGO_SHA256: c41672a0725d307758a132bc94a962e59760eb33f9ba08c991b81f9881d6fa7d
+          GH_TOKEN: ${{ github.token }}
         run: |
-          curl -fsSLo /tmp/hugo.tar.gz "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-amd64.tar.gz"
+          curl --fail --show-error --silent --location \
+            --retry 5 --retry-all-errors --retry-delay 5 \
+            --connect-timeout 20 --max-time 300 \
+            -H "Accept: application/octet-stream" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            --output /tmp/hugo.tar.gz \
+            "https://api.github.com/repos/gohugoio/hugo/releases/assets/${HUGO_ASSET_ID}"
           echo "${HUGO_SHA256}  /tmp/hugo.tar.gz" | sha256sum -c -
           tar -xzf /tmp/hugo.tar.gz -C /tmp hugo
           sudo install /tmp/hugo /usr/local/bin/hugo
