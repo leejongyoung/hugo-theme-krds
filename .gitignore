@@ -5,3 +5,4 @@ exampleSite/public/
 exampleSite/resources/
 __pycache__/
 *.pyc
+/exampleSite/static/assets/vendor/rhwp/

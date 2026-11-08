@@ -1,0 +1,4 @@
+{{- /* 고화질 한글 미리보기(rhwp)를 쓸지. params.krds.hwp.rhwp: true 로 켠다(기본 꺼짐). rhwp 파일은 사이트의 assets/vendor/rhwp/ 에 있어야 한다. */ -}}
+{{- $krds := site.Params.krds | default dict -}}
+{{- $cfg := index $krds "hwp" | default dict -}}
+{{- return (eq (index $cfg "rhwp") true) -}}
