@@ -31,10 +31,6 @@ jobs:
         uses: ./document-previews
         with:
           source: exampleSite/static/assets/files
-      - name: Download rhwp (optional high-fidelity Hangul preview)
-        uses: ./rhwp-vendor
-        with:
-          dest: exampleSite/static/assets/vendor/rhwp
       - uses: actions/configure-pages@v6
         id: pages
       - uses: actions/setup-go@v7

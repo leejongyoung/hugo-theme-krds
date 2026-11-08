@@ -29,16 +29,14 @@
 {{- $viewKind := "" -}}
 {{- if or (eq $kind "pdf") (eq $kind "image") (eq $kind "sheet") (eq $kind "text") -}}{{- $viewKind = $kind -}}
 {{- else if and (eq $kind "doc") (ne $previewPDFURL "") -}}{{- $viewKind = "doc" -}}
-{{- else if and (eq $ext "hwpx") (eq $previewPDFURL "") -}}{{- $viewKind = "hwpx" -}}{{- end -}}
+{{- else if and (in (slice "hwp" "hwpx") $ext) (eq $previewPDFURL "") -}}{{- $viewKind = "hwp" -}}{{- end -}}
 {{- $viewSrc := $srcURL -}}
 {{- if and (eq $viewKind "doc") (ne $previewPDFURL "") -}}{{- $viewSrc = $previewPDFURL -}}{{- end -}}
 {{- $viewerKind := $viewKind -}}
 {{- if eq $viewerKind "doc" }}{{ $viewerKind = "pdf" }}{{ end -}}
-{{- /* 고화질 한글 미리보기(rhwp, 선택): hwp·hwpx에 PDF 변환본이 없을 때만. 켜지 않으면 아래 값은 모두 꺼짐 */ -}}
-{{- $rhwpDoc := and (partial "rhwp-enabled.html" .) (in (slice "hwp" "hwpx") $ext) (eq $previewPDFURL "") -}}
-{{- $rhwpOn := and $rhwpDoc $wantPreview -}}
-{{- $rhwpViewerURL := "" -}}
-{{- if $rhwpDoc -}}{{- $rhwpViewerURL = printf "%s?src=%s&download=%s&kind=rhwp&ext=%s&title=%s" ("assets/attachment-viewer.html" | relURL) (urlquery $srcURL) (urlquery $srcURL) (urlquery $ext) (urlquery $title) -}}{{- end -}}
+{{- /* 한글 문서(hwp·hwpx)에 PDF 변환본이 없으면 rhwp로 쪽 모양 그대로 그린다. 엔진 파일은 이때만 사이트에 발행된다 */ -}}
+{{- $hwpBase := "" -}}
+{{- if eq $viewKind "hwp" }}{{ $hwpBase = partial "rhwp-base.html" . }}{{ end -}}
 {{- $viewerURL := "" -}}
 {{- if $viewKind -}}
   {{- $viewerBase := "assets/attachment-viewer.html" | relURL -}}
@@ -55,7 +53,7 @@
     {{- end -}}
   {{- end -}}
 {{- end -}}
-<figure class="th-embed th-attachment th-attachment-{{ $kind }}"{{ if and $wantPreview (eq $kind "sheet") }} data-th-sheet data-sheet-src="{{ $srcURL }}"{{ end }}{{ if and $wantPreview (eq $viewKind "hwpx") }} data-th-hwpx data-hwpx-src="{{ $srcURL }}"{{ end }}{{ if and $wantPreview (eq $viewKind "text") }} data-th-text data-text-src="{{ $srcURL }}"{{ end }}{{ if $rhwpOn }} data-th-rhwp data-rhwp-src="{{ $srcURL }}" data-rhwp-base="{{ "assets/vendor/rhwp/" | relURL }}"{{ end }}>
+<figure class="th-embed th-attachment th-attachment-{{ $kind }}"{{ if and $wantPreview (eq $kind "sheet") }} data-th-sheet data-sheet-src="{{ $srcURL }}"{{ end }}{{ if and $wantPreview (eq $viewKind "hwp") }} data-th-hwp data-hwp-src="{{ $srcURL }}" data-hwp-base="{{ $hwpBase }}"{{ end }}{{ if and $wantPreview (eq $viewKind "text") }} data-th-text data-text-src="{{ $srcURL }}"{{ end }}>
   {{- if and $wantPreview $viewKind -}}
     {{- if eq $viewKind "pdf" -}}
   <div class="th-attachment-preview"><object data="{{ $srcURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
@@ -67,13 +65,11 @@
   <div class="th-attachment-preview"><object data="{{ $previewPDFURL }}" type="application/pdf" aria-label="{{ $title }} 미리보기(PDF 변환본)"><p class="th-attachment-fallback"><a href="{{ $srcURL }}">{{ $title }} 내려받기</a></p></object></div>
     {{- else if eq $viewKind "text" -}}
   <div class="th-attachment-preview th-attachment-text"><div class="th-text-wrap" aria-live="polite"><p class="th-embed-note">텍스트 불러오는 중…</p></div></div>
-    {{- else if eq $viewKind "hwpx" -}}
-  <div class="th-attachment-preview th-attachment-hwpx"><div class="th-hwpx-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
+    {{- else if eq $viewKind "hwp" -}}
+  <div class="th-attachment-preview th-attachment-hwp"><div class="th-hwp-wrap" aria-live="polite"><p class="th-embed-note">한글 문서 불러오는 중…</p></div></div>
     {{- end -}}
   {{- end -}}
-  {{- if and $rhwpOn (eq $viewKind "") }}
-  <div class="th-attachment-preview th-attachment-rhwp"><div class="th-rhwp-wrap"><p class="th-embed-note">이 한글 문서(hwp)는 고화질 미리보기로만 볼 수 있습니다. 아래 버튼을 눌러 쪽 모양 그대로 확인하세요.</p></div></div>
-  {{- end }}
+
   <figcaption class="th-attachment-meta">
     {{ partial "attachment-icon.html" $ext }}
     <span class="th-attachment-title">{{ $title }}</span>
@@ -82,7 +78,6 @@
     <span class="th-attachment-kind">{{ $kindLabel }}</span>
     {{- if $scan }}<span class="th-attachment-scan" title="{{ $scan.engine }} · {{ $scan.scanned_at }} 검사 · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과</span>{{ end -}}
     {{- if and $showActions $viewKind }}<a class="krds-btn small text th-attachment-preview-link" href="{{ $viewerURL }}" target="_blank" rel="noopener">미리보기 <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{{ end -}}
-    {{- if and $showActions $rhwpViewerURL }}<a class="krds-btn small text th-attachment-preview-link" href="{{ $rhwpViewerURL }}" target="_blank" rel="noopener">{{ if $viewKind }}고화질 미리보기{{ else }}미리보기{{ end }} <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{{ end -}}
     {{- if $showActions }}<a class="krds-btn small text th-attachment-download" href="{{ $srcURL }}"{{ if not (strings.HasPrefix $src "http") }} download{{ else }} target="_blank" rel="noopener"{{ end }}>내려받기 <i class="th-fa th-fa-download" aria-hidden="true"></i></a>{{ end -}}
     {{- with .sha256 }}<span class="th-attachment-sha">SHA-256 {{ . }}</span>{{ end -}}
   </figcaption>
