@@ -72,7 +72,7 @@
     {{- with .desc }}<span class="th-attachment-desc">{{ . }}</span>{{ end -}}
     {{- with .size }}<span class="th-attachment-size">{{ . }}</span>{{ end -}}
     <span class="th-attachment-kind">{{ $kindLabel }}</span>
-    {{- if $scan }}<span class="th-attachment-scan" title="{{ $scan.engine }} · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과 · {{ $scan.scanned_at }}</span>{{ end -}}
+    {{- if $scan }}<span class="th-attachment-scan" title="{{ $scan.engine }} · {{ $scan.scanned_at }} 검사 · 최초 등록 때 한 번 검사한 결과이며 안전을 보증하지는 않습니다."><i class="th-fa th-fa-shield-halved" aria-hidden="true"></i>바이러스 검사 통과</span>{{ end -}}
     {{- if and $showActions $viewKind }}<a class="krds-btn small text th-attachment-preview-link" href="{{ $viewerURL }}" target="_blank" rel="noopener">미리보기 <i class="th-fa th-fa-up-right-from-square" aria-hidden="true"></i><span class="th-sr-only"> (새 창 열림)</span></a>{{ end -}}
     {{- if $showActions }}<a class="krds-btn small text th-attachment-download" href="{{ $srcURL }}"{{ if not (strings.HasPrefix $src "http") }} download{{ else }} target="_blank" rel="noopener"{{ end }}>내려받기 <i class="th-fa th-fa-download" aria-hidden="true"></i></a>{{ end -}}
     {{- with .sha256 }}<span class="th-attachment-sha">SHA-256 {{ . }}</span>{{ end -}}
