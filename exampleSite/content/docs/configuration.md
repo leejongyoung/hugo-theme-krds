@@ -13,8 +13,8 @@ tags: [설정, 가이드]
 | `params.footer.description` | 푸터 설명 |
 | `params.footer.contact` | 푸터 연락처 목록(`label`, `value`) |
 | `params.customCSS` | 테마 CSS 뒤에 불러올 사이트 CSS 경로 목록 |
-| `params.krds.search.ai` | 검색의 "AI에게 물어보기"를 켤지(기본 꺼짐). `true`이거나 서비스 목록(예: `[chatgpt, gemini, grok]`). 질문을 무료 웹 챗봇으로 넘기는 링크이며 `search.sentence`가 켜져 있어야 합니다 |
 | `params.krds.search.sentence` | 검색의 "문장으로 찾기"를 켤지(기본 `true`). 끄면 색인에서 소제목별 본문이 빠집니다 |
+| `params.krds.faq.ask` | 자주 묻는 질문 아래 "질문하기" 버튼의 기본 주소(이슈·토론·메일). 숏코드의 `ask`가 우선합니다 |
 | `pagination.pagerSize` | 글 목록 한 페이지의 글 수 |
 | `outputs.home` | 검색에 필요한 `JSON`을 포함한 홈 출력 형식 |
 

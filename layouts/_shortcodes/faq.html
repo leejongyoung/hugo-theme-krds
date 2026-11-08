@@ -1,0 +1,25 @@
+{{- /* 자주 묻는 질문(FAQ) 아코디언. 본문에 "## 질문" 형식으로 한 줄에 하나씩 적고 답을 아래에 쓴다.
+  ask가 있으면 아래에 "질문하기" 버튼을 둔다(예: 이슈·토론·메일 주소). site.Params.krds.faq.ask를 기본값으로 쓴다.
+  검색엔진용 FAQ 구조화 데이터(JSON-LD)도 함께 낸다(JS 없이 details/summary로 동작). */ -}}
+{{- $ask := .Get "ask" | default "" -}}
+{{- if eq $ask "" }}{{ $ask = site.Params.krds.faq.ask | default "" }}{{ end -}}
+{{- $inner := strings.TrimSpace .Inner -}}
+{{- $chunks := slice -}}
+{{- if strings.HasPrefix $inner "## " }}{{ $chunks = split (strings.TrimPrefix "## " $inner) "\n## " }}{{ end -}}
+{{- if gt (len $chunks) 0 -}}
+{{- $entities := slice -}}
+<div class="th-faq">
+  {{- range $chunks -}}
+  {{- $lines := split . "\n" -}}
+  {{- $q := strings.TrimSpace (index $lines 0) -}}
+  {{- $a := delimit (after 1 $lines) "\n" | strings.TrimSpace | markdownify -}}
+  {{- $entities = $entities | append (dict "@type" "Question" "name" ($q | plainify) "acceptedAnswer" (dict "@type" "Answer" "text" ($a | plainify))) -}}
+  <details class="th-faq-item">
+    <summary class="th-faq-q"><span>{{ $q }}</span></summary>
+    <div class="th-faq-a">{{ $a }}</div>
+  </details>
+  {{- end }}
+  {{- with $ask }}<p class="th-faq-ask"><a class="krds-btn medium secondary" href="{{ . }}">질문하기</a></p>{{ end }}
+</div>
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "FAQPage" "mainEntity" $entities | jsonify | safeJS }}</script>
+{{- end -}}
