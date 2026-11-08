@@ -7,7 +7,7 @@ tags: [설치, 가이드]
 
 ## Hugo Module
 
-사이트 루트에서 모듈을 만들고 `hugo.yaml`에 테마를 지정합니다. Hugo Extended 0.146.0 이상과 Go 1.24 이상이 필요합니다.
+사이트 루트에서 모듈을 만들고 `hugo.yaml`에 테마를 지정합니다. Hugo Extended 0.158.0 이상과 Go 1.24 이상이 필요합니다.
 
 ```sh
 hugo mod init github.com/example/my-site
