@@ -10660,7 +10660,16 @@ body {
 }
 .th-doc-toc {
   position: sticky;
-  top: var(--krds-gap-6);
+  top: 17rem;
+}
+.th-doc-toc .krds-in-page-navigation-type .krds-in-page-navigation-area {
+  position: static;
+  width: auto;
+  max-width: var(--krds-in-page-navigation--width);
+  max-height: calc(100vh - 17rem - var(--krds-gap-6));
+  padding: 0.4rem;
+  margin: -0.4rem;
+  overflow-y: auto;
 }
 
 .th-doc > article, .th-doc-side {
